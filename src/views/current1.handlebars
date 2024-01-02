@@ -1,0 +1,31 @@
+{{>menu}}
+<br>
+<h2>Datos del usuario registrados:</h2>
+<hr>
+<br> 
+<h3> 
+    Nombre : {{name}}
+</h3>
+<h3>
+    Apellido : {{last_name}}
+</h3>
+<h3>
+    Email : {{email}}
+</h3>
+<h3> 
+    Categoria de Usuario : {{typeofuser}}
+    <form action='/api/sesions/premium/{{email}}' method="get" > 
+    {{#if upgrade}}
+    <input type="submit" value="Upgrade de categoría" >
+    {{else}}
+    <input type="submit" value="Downgrade de categoría" >
+    {{/if}}
+    </form>
+
+</h3>
+<h3>
+    Edad : {{age}}
+</h3>
+<h3>
+    Identificador del carrito : {{cartId}}
+</h3>

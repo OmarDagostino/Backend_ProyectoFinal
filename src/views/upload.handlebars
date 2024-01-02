@@ -1,0 +1,113 @@
+<body>
+{{>menu}}
+<br>
+<h2>Subida de imágenes y documentos :</h2>
+<hr>
+<br> 
+{{#if error}}
+<div class="error">
+    {{errorDetail}}
+</div>
+{{/if}}
+<form action="/api/sesions/users/{{uid}}/documents" method="POST" enctype="multipart/form-data" id="uploadForm">
+  <div id="archivo-containers">
+    <div class="archivo-container" data-index="1">
+      <label for="tipoDocumento1">Nombre:</label>
+      <select name="tipoDocumento1" class="tipoDocumento" onchange="checkOtro(this)">
+        <option value="identificacion">Identificación</option>
+        <option value="domicilio">Comprobante de Domicilio</option>
+        <option value="estadoCuenta">Comprobante de Estado de Cuenta</option>
+        <option value="otro">Otro</option>
+      </select>
+
+      <div class="otroInput" style="display: none;">
+        <label for="otroTexto1">Especificar:</label>
+        <input type="text" name="otroTexto1" class="otroTexto">
+      </div>
+
+      <label for="tipoArchivo1">Tipo:</label>
+      <select name="tipoArchivo1" class="tipoArchivo">
+        <option value="perfil">Imagen del perfil</option>
+        <option value="producto">Imagen de Producto</option>
+        <option value="documento">Documento</option>
+      </select>
+      
+      <label for="archivos1">Seleccionar :</label>
+      <input type="file" name="archivos1" class="archivos" onchange="agregarNuevoInput(this)">
+    </div>
+  </div>
+
+  <button type="submit">Subir archivos</button>
+</form>
+
+<script>
+  function checkOtro(selectElement) {
+    const container = selectElement.closest('.archivo-container');
+    const otroInput = container.querySelector('.otroInput');
+    const otroTextoInput = container.querySelector('.otroTexto');
+
+    if (selectElement.value === 'otro') {
+      otroInput.style.display = 'inline';
+      otroTextoInput.required = true;
+    } else {
+      otroInput.style.display = 'none';
+      otroTextoInput.required = false;
+    }
+  }
+
+  function agregarNuevoInput(inputElement) {
+    const container = document.getElementById('archivo-containers');
+    const nuevoIndex = container.children.length + 1;
+
+    const nuevoContainer = document.createElement('div');
+    nuevoContainer.classList.add('archivo-container');
+    nuevoContainer.setAttribute('data-index', nuevoIndex);
+
+    const nuevoDocumento = document.createElement('select');
+    nuevoDocumento.name = `tipoDocumento1`;
+    nuevoDocumento.classList.add('tipoDocumento');
+    nuevoDocumento.innerHTML = document.querySelector('.tipoDocumento').innerHTML;
+    nuevoDocumento.addEventListener('change', function() {
+        checkOtro(this);
+    });
+    // nuevoContainer.appendChild(document.createElement('br'));
+    // nuevoContainer.appendChild(document.createElement('br'));
+    nuevoContainer.appendChild(document.createTextNode(`(${nuevoIndex}) `));
+    // nuevoContainer.appendChild(document.createElement('br'));
+    nuevoContainer.appendChild(document.createTextNode('Nombre:'));
+    nuevoContainer.appendChild(nuevoDocumento);
+
+    const nuevoOtroInput = document.createElement('div');
+    nuevoOtroInput.classList.add('otroInput');
+    nuevoOtroInput.style.display = 'none';
+    nuevoOtroInput.innerHTML = document.querySelector('.otroInput').innerHTML;
+    // nuevoContainer.appendChild(document.createElement('br'));
+    nuevoContainer.appendChild(nuevoOtroInput);
+
+    const nuevoArchivo = document.createElement('select');
+    nuevoArchivo.name = `tipoArchivo1`;
+    nuevoArchivo.classList.add('tipoArchivo');
+    nuevoArchivo.innerHTML = document.querySelector('.tipoArchivo').innerHTML;
+    // nuevoContainer.appendChild(document.createElement('br'));
+    nuevoContainer.appendChild(document.createTextNode('Tipo:'));
+    nuevoContainer.appendChild(nuevoArchivo);
+
+    const nuevoArchivos = document.createElement('input');
+    nuevoArchivos.type = 'file';
+    nuevoArchivos.name = `archivos1`;
+    nuevoArchivos.classList.add('archivos');
+    // nuevoArchivos.multiple = true;
+    nuevoArchivos.addEventListener('change', function() {
+        agregarNuevoInput(this);
+    });
+
+    // nuevoContainer.appendChild(document.createElement('br'));
+    nuevoContainer.appendChild(document.createTextNode('Seleccionar:'));
+    nuevoContainer.appendChild(nuevoArchivos);
+
+    container.appendChild(nuevoContainer);
+}
+
+</script>
+
+</body>

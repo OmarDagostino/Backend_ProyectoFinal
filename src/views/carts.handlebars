@@ -1,0 +1,46 @@
+{{>menu}}
+<body>
+    <h4 id="identificador del carrito ">
+        Identificador del carrito 
+    
+    <strong> 
+        {{cart.cartId}}
+   
+        <form id=submitcomprar action="api/carts/{{cart.cartId}}/purchase" method="POST">
+            <button id=boton_de_compra type="submit">Comprar</button>
+        </form>
+        
+    </strong>
+    </h4>
+<h4>
+    <strong>
+        {{mensaje}}
+    </strong>
+</h4>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Identificador del producto</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Código</th>
+                <th>Cantidad comprada</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            {{#each cart.products}}
+                <tr>
+                    <td>{{this.productId}}</td>
+                    <td>{{this.title}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.code}}</td>
+                    <td>{{this.cantidad}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</body>
+</body>

@@ -1,0 +1,24 @@
+<a class="olvidoPass" href="/login"> Volver a la pantalla de LogIn </a>
+<br> 
+<h2>Recuperación de contraseña:</h2>
+<hr>
+<br> 
+{{#if mostrarMensaje}}
+<div class=error>
+    {{mensaje}}
+</div>
+<div>
+    Puedes solicitar un nuevo envio del mail para recuperar tu contraseña
+</div>
+{{/if}}
+
+<form action="/api/sesions/forgot" method="post"> 
+<input type="email" name="email" placeholder="email">
+
+<input type="submit" value="Re-establecer" >
+</form>
+
+<h4>
+    Debes ingresar tu dirección de correo, si estas registrado recibiras un correo con un link que debes seguir para re-establecer tu contraseña
+</h4>
+

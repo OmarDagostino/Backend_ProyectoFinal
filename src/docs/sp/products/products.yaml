@@ -1,0 +1,332 @@
+paths:
+  /api/products:
+    get:
+      summary: Devuelve varios productos o todos dependiendo de los parámetros. Si el tipo de usuario es del tipo administrador, devuelve todos los productos (considerando la seleccion que se pueda hacer con los parametros , o bien solo devuelve los productos correspondientes al usuario que hizo Login
+      tags:
+        - products
+      parameters:
+        - name: category
+          in: query
+          description: Categoría de los productos que se desean obtener, si se omite devuelve todos
+          required: false
+          schema:
+            type: string
+        - name: stock
+          in: query
+          description: Stock de los productos que se desean consultar, si se omite devuelve todos
+          required: false
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          description: Clasifica los productos por orden descendente de precio si se especifica 'desc', caso contrario lo hace en forma ascendente
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Número de página desde la cual se desean obtener los productos, si se omite considera 1
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Cantidad de productos a obtener por página, si se omite considera 10 productos por pagina
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: los productos requeridos fueron obtenidos
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/ProductPayload'
+        '500': 
+          description: Error inesperado al tratar de recuperar los productos solicitados
+    post:
+      summary: Crea un producto nuevo
+      tags:
+        - products
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: product
+          description: Datos del producto a crear
+          schema:
+            type: object
+            required: true
+            properties:
+              code:
+                type: string
+                required: true
+              title:
+                type: string
+                required: true
+              description:
+                type: string
+                required: true
+              price:
+                type: integer
+                required: true
+              stock:
+                type: integer
+                required: true
+              thumbnail:
+                type: array
+                items: 
+                  type: string
+                required: false
+              status:
+                type: boolean
+                required: false
+      responses:
+        '200':
+          description: Producto creado correctamente
+        '400':
+          description: Código de producto ya existe
+        '500': 
+          description: Error inesperado al tratar de crear un producto
+    
+  /api/products/{pid}:
+    get:
+      summary: Devuelve la información de un producto por su ID
+      tags:
+        - products
+      parameters:
+        - name: pid
+          in: path
+          description: Identificación del producto solicitado
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: el producto requerido fue obtenido
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        '404':
+          description: El producto requerido no existe
+        '452':
+          description: El identificador del producto no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '500': 
+          description: Error inesperado al tratar obtener un producto por su ID
+    put:
+      summary: Actualiza un producto por su ID
+      tags:
+        - products
+      consumes: 
+        - application/json
+      parameters:
+        - name: pid
+          in: path
+          description: Identificación del producto a modificar
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: product
+          description: Datos del producto a modificar
+          schema:
+            type: object
+            required: true
+            properties:
+              title:
+                type: string
+                required: false
+              description:
+                type: string
+                required: false
+              price:
+                type: integer
+                required: false
+              stock:
+                type: integer
+                required: false
+              thumbnail:
+                type: array
+                items: 
+                  type: string
+                required: false
+              status:
+                type: boolean
+                required: false
+      responses:
+        '403': 
+          description: Usuario no autorizado a hacer esta transacción
+        '404':
+          description: El producto requerido no existe
+        '452':
+          description: El identificador del producto no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '453': 
+          description: Datos faltantes o inválidos
+    delete:
+      summary: Borra un producto por su ID
+      tags:
+        - products
+      parameters:
+        - name: pid
+          in: path
+          description: Identificación del producto a eliminar
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description:  Producto eliminado correctamente
+        '403': 
+          description: Usuario no autorizado a hacer esta transacción
+        '404':
+          description: El producto requerido no existe
+        '452':
+          description: El identificador del producto no es válido (debe ser un string con formato válido de un object Id de MongoDB)
+        '500': 
+          description: Error inesperado al tratar de eliminar un producto
+  /api/mockingproducts:
+    get:
+      summary: Devuelve la información de 100 productos inventados por faker-js
+      tags:
+        - mockingproducts
+      responses:
+        '200':
+          description:  Devuelve la lista de los 100 productos inventados en formato json
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#components/schemas/Product'
+components:
+  schemas:
+    Product:
+      properties:
+        _id:
+          type: string
+          description: Id del producto autogenerado por Mongo
+        code:
+          type: string
+          description: codigo de producto
+        title:
+          type: string
+          description: titulo del producto
+        description:
+          type: string
+          description: descripción del producto
+        price:
+          type: integer
+          description: precio unitario del producto
+        stock:
+          type: integer
+          description: stock en existencia
+        thumbnail:
+          type: array
+          items: 
+            type: string
+            description: URL de las miniaturas del producto
+        owner:
+          type: string
+          description: email del comercializador del producto
+        status:
+          type: boolean
+          description : estado del producto
+        
+      example:
+        _id: 650d5a7e3a256e5089b2edc2
+        code: AAA1
+        title: producto
+        description: descripcion del producto 
+        price: 1000
+        stock: 20
+        thumbnail: url
+        owner: juan@camino.com
+        status: true
+
+    ProductPayload:
+      properties:
+        status1:
+          type: string
+          description: especifica success cuando la busqueda fue exitosa
+        payload:
+          type: array
+          description: array con los productos requeridos
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+                description: Id del producto autogenerado por Mongo
+              code:
+                type: string
+                description: codigo de producto
+              title:
+                type: string
+                description: titulo del producto
+              description:
+                type: string
+                description: descripción del producto
+              price:
+                type: integer
+                description: precio unitario del producto
+              stock:
+                type: integer
+                description: stock en existencia
+              thumbnail:
+                type: array
+                items: 
+                  type: string
+                  description: URL de las miniaturas del producto
+              owner:
+                type: string
+                description: email del comercializador del producto
+              status:
+                type: boolean
+                description : estado del producto
+              totalPages: 
+                type: integer
+                description: cantidad de paginas que tiene la consulta
+              prevPage:
+                type: integer
+                description: número de la página previa (o null si no existiera)
+              nextPage:
+                type: integer
+                description: número de la próxima página (o null si no existiera)
+              page:
+                type: integer
+                description: número de la página actual
+              hasPrevPage: 
+                type: boolean
+                description: existencia de la página previa
+              hasNextPage: 
+                type: boolean
+                description: existencia de próxima página
+              prevLink: 
+                type: string
+                description: URL de la página previa
+              nextLink: 
+                type: string
+                description: URL de la próxima página
+      example:
+        status1: success
+        payload: 
+          _id: 650d5a7e3a256e5089b2edc2
+          code: AAA1
+          title: producto
+          description: descripcion del producto 
+          price: 1000
+          stock: 20
+          thumbnail: url
+          owner: juan@camino.com
+          status: true
+        totalPages: 3
+        prevPage: 1
+        nextPage: 3
+        page: 2
+        hasPrevPage: true
+        hasNextPage: true
+        prevLink: "/products?page=1&limit=10&sort=undefined&query="
+        nextLink: "/products?page=3&limit=10&sort=undefined&query="
+         
+          
+       

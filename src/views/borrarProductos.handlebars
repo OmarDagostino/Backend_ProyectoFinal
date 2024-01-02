@@ -1,0 +1,87 @@
+{{>menu}}
+<h3> 
+<strong> Eliminar Productos </strong>
+
+</h3>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Identificador</th> 
+                <th>Código</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Existencias</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            {{#each renderedProducts}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{code}}</td>
+                    <td>{{title}}</td>
+                    <td>{{description}}</td>
+                    <th>{{category}}</th>
+                    <td>{{price}}</td>                    
+                    <td>{{stock}}</td>
+                    <td>
+                        <button class="deleteButton" data-productid="{{_id}}"> Eliminar </button>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const deleteButtons = document.querySelectorAll(".deleteButton");
+            deleteButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const productId = button.getAttribute("data-productid");
+                    fetch(`/api/productS/${productId}`, {
+                        
+                        method: "DELETE",
+                    })
+                    .then(function (response) {
+    if (response.ok) {
+        return response.json();
+    } else {
+        console.log('Error al ELIMINAR EL PRODUCTO');
+        throw new Error('Error al eliminar el producto');
+    }
+})
+.then(function (data) {
+    console.log('PRODUCTO ELIMINADO');
+   
+    const productTableBody = document.getElementById("productTableBody");
+    productTableBody.innerHTML = ""; 
+    
+    data.products.docs.forEach(function (product) {
+        
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `<td>${product._id}</td>
+                            <td>${product.code}</td>
+                            <td>${product.title}</td>
+                            <td>${product.description}</td>
+                            <td>${product.category}</td>
+                            <td>${product.price}</td>
+                            <td>${product.stock}</td>
+                            <td>
+                                <button class="addToCartButton" data-productid="${product._id}"> Eliminar </button>
+                            </td>`;
+        productTableBody.appendChild(newRow);
+    });
+    location.reload(); 
+})
+.catch(function (error) {
+    console.error("Error al realizar la solicitud DELETE:", error);
+});
+
+                });
+            });
+        });
+    </script>
+</body>

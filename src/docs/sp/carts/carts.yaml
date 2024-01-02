@@ -1,0 +1,255 @@
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Devuelve el contenido de un carrito por su ID
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          description: Identificación del carrito solicitado
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El carrito fue obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Cart'
+        '404':
+          description: El carrito requerido no existe
+        '451':
+          description: El identificador del carrito no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '500': 
+          description: Error inesperado al tratar de acceder a un carrito
+    delete:
+      summary: borrar el contenido de un carrito
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          description: Identificación del carrito solicitado
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Carrito actualizado correctamente
+        '404':
+          description: El carrito requerido no existe
+        '451':
+          description: El identificador del carrito no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '500': 
+          description: Error inesperado al tratar de eliminar todos los productos de un carrito
+    put:
+      summary: actualiza todo el contenido de un carrito
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          description: Identificación del carrito solicitado
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: nuevoCarrito
+          description: productos y cantidades del nuevo contenido del carrito
+          required: true
+          schema:
+            $ref: '#components/schemas/NuevoCarrito'
+      responses:
+        '201':
+          description: Carrito actualizado correctamente
+        '404':
+          description: El carrito requerido no existe
+        '451':
+          description: El identificador del carrito no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '453':
+          description: Datos faltantes o erroneos
+        '500': 
+          description: Error inesperado al tratar de actualizar un carrito
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: agrega un producto a un carrito (o le suma 1 en cantodad si el producto ya existe)
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          description: Identificación del carrito a actualizar
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: Identificación del producto a actualizar o agregar
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Carrito actualizado correctamente
+        '403':
+          description: No se puede comprar un producto del mismo usuario que lo creo
+        '404':
+          description: El carrito requerido no existe
+        '405':
+          description: El producto requerido no existe
+        '407':
+          description: El producto requerido no tiene stock
+        '451':
+          description: El identificador del carrito no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '452':
+          description: El identificador del producto no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '500': 
+          description: Error inesperado al tratar de actualizar un carrito
+    put:
+      summary: reemplaza la cantidad de un producto en un carrito
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          description: Identificación del carrito a actualizar
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: Identificación del producto a actualizar 
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: quantity
+          description: cantidad de reemplazo
+          schema:
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: Carrito actualizado correctamente
+        '404':
+          description: El carrito requerido no existe
+        '406':
+          description: El producto no existe en el carrito informado
+        '451':
+          description: El identificador del carrito no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '453':
+          description: Datos faltantes o inválidos
+        '500': 
+          description: Error inesperado al tratar de actualizar un carrito
+    delete:
+      summary: borra un producto del carrito
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          description: Identificación del carrito a actualizar
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: Identificación del producto a eliminar del carrito
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Carrito actualizado correctamente
+        '404':
+          description: El carrito requerido no existe
+        '406':
+          description: El producto no existe en el carrito informado
+        '451':
+          description: El identificador del carrito no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '452':
+          description: El identificador del producto no es válido (debe ser un string con formato válido de un object ID de MongoDB)
+        '500': 
+          description: Error inesperado al tratar de eliminar un producto de un carrito
+  /api/carts/product/{pid}:
+    post:
+      summary: Crea un carrito nuevo
+      tags:
+        - carts
+      parameters:
+        - name: pid
+          in: path
+          description: Identificación del producto con el cual crear el carrito carrito
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito creado correctamente
+        '405':
+          description: El producto requerido no existe
+        '407':
+          description: El producto requerido no tiene stock
+        '452':
+          description: El identificador del producto no es válido
+        '500':
+          description: Error inesperado al tratar de crear un carrito
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Efectua el proceso de compra de un carrito. Por cada item del carrito, controla el stock de cada producto, y si hay suficiente, le descuenta la cantidad en el archivo de productos y genera un item del ticket correspondiente, y lo elimina del carrito. Si no hay stock suficiente, solo le asigna el saldo que haya, y descuenta esta cantidad tanto del producto como del carrito, en este caso envia un mail al usuario indicandole que hay productos sin disponibilidad (y la lista de como quedo el carrito con los items faltantes) . Cuando termina de procesar todos los items, le envia un mail al usuario con el ticket de compra, que graba en la colección correpondiente (tickets1)
+      tags:
+        - carts
+      parameters:
+        - name: cid
+          in: path
+          description: Identificación del carrito a comprar
+          required: true
+          schema:
+            type: string
+      responses:
+        '404':
+          description: El carrito requerido no existe
+        '500':
+          description: Error inesperado en el proceso de compra
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id del carrito autogenerado por Mongo
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                description: Id del producto
+              quantity:
+                type: integer
+                description: cantidad comprada
+      example:
+        productId: 650d5a7e3a256e5089b2edc2
+        quantity: 4
+    NuevoCarrito:
+      type: object
+      properties:
+        products:  
+          type: array
+          required: true
+          items: 
+            type: object
+            properties:
+              productId:
+                description: Id del producto
+                type: string
+              quantity:
+                description: cantidad comprada
+                type: integer
+      example:
+        productId: 650d5a7e3a256e5089b2edc2
+        quantity: 8

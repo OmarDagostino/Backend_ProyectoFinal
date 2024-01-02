@@ -1,0 +1,75 @@
+<div class="menu-container">
+<h5> Menu &#9658 </h5>
+<ul class="menu"> 
+    {{#if mostrarMenu0}}
+    <li>
+        <a href="/"> Home Page</a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu1}}
+    <li>
+        <a href="/registro"> Registro</a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu2}}
+    <li>
+        <a href="/login"> Login </a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu3}}
+    <li>
+        <a href="/loginGitHub"> Login con Git Hub</a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu4}}
+    <li>
+        <a href="/current1"> Mostrar datos</a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu5}}
+    <li>
+        <a href="/products"> Productos</a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu6}}
+    <li>
+        <a href="/carts"> Carrito</a>
+    </li>
+    {{/if}}
+     {{#if mostrarMenu10}}
+    <li>
+        <a href="/premium">Ir a Premium</a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu11}}
+    <li>
+        <a href="/upload">Subir docs/imgs</a>
+    </li>
+    {{/if}}
+    {{#if mostrarMenu7}}
+    <li>
+         <a href="/api/sesions/logout"> Log Out</a>
+    </li>
+    {{/if}}
+
+    {{#if mostrarMenu8}}
+    {{#unless mostrarMenu10}}
+        <li>
+            <a href="/admin"> Volver al menu del Administrador</a>
+        </li>
+    {{/unless}}
+    {{/if}}
+
+     {{#if mostrarMenu9}}
+    <li>
+        <a href="/chat"> Chat </a>
+    </li>
+    {{/if}}
+
+
+
+</ul>
+{{#unless mostrarMenu1}}
+<h4 class="typeofuser"> Tipo de Usuario : {{typeofuser}} </h4>
+{{/unless}}
+</div>

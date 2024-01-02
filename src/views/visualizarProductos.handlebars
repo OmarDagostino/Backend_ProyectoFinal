@@ -1,0 +1,39 @@
+{{>menu}}
+<h3>  
+
+<strong> Visualizar todos los productos </strong>
+
+</h3>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Identificador</th> 
+                <th>Código</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Existencias</th>
+                <th>Propietario</th>
+                
+            </tr>
+        </thead>
+        <tbody id="productTableBody1">
+            {{#each renderedProducts}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{code}}</td>
+                    <td>{{title}}</td>
+                    <td>{{description}}</td>
+                    <td>{{category}}</td>
+                    <td>{{price}}</td>                    
+                    <td>{{stock}}</td>
+                    <td>{{owner}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    
+</body>

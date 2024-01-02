@@ -1,0 +1,22 @@
+{{>menu}}
+<br>
+<h2>Recuperar la contraseña </h2>
+<hr>
+<br> 
+{{#if error}}
+<div class=error>
+    {{errorDetail}}
+</div>
+{{/if}}
+
+<h4> la contraseña debe ser distinta a la registrada </h4>
+
+<br> <br>
+
+<form action="/api/sesions/recuperacion" method="post">
+  <span>{{usuario}}</span>
+  <input type="hidden" name="email" value="{{usuario}}">
+  <input type="text" name="newPassword" placeholder="Nueva contraseña">
+  <input type="submit" value="Actualizar">
+</form>
+

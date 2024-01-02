@@ -1,0 +1,21 @@
+{{>menu}}
+<br>
+<h2>Registro de usuario :</h2>
+<hr>
+<br> 
+{{#if error}}
+<div class=error>
+    {{errorDetail}}
+</div>
+{{/if}}
+
+<form action="/api/sesions/registro" method="post"> 
+
+<input type="text" name="name" placeholder="nombre">
+<input type="text" name="last_name" placeholder="apellido">
+<input type="number" name="age" placeholder="edad"> 
+<input type="email" name="email" placeholder="email">
+<input type="password" name="password" placeholder="password">
+
+<input type="submit" value="Registrar" >
+</form>

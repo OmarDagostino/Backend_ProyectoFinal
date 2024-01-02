@@ -1,0 +1,134 @@
+ #mensajes {
+    margin-top: 15px;
+    width:90%;
+    height:350px;
+    overflow-y:scroll;
+    box-shadow: 0px 0px 5px #333 inset;
+    padding:5px;
+    background-color: cadetblue;
+
+}
+
+.mensaje {
+    border:  1px solid #555;
+    border-radius: 7px;
+    padding: 5px;
+    background-color: wheat;
+    display:inline-block;
+    margin-top: 5px;
+}
+
+.menu-container {
+  display: flex; 
+  align-items: center; 
+}
+.error {
+  background-color: red;
+  color:yellow;
+  font-weight: bolder;
+  width: fit-content;
+}
+.typeofuser {
+  display:flex;
+  margin-right: 20px;
+}
+
+.menu a {
+  text-decoration: none;
+}
+
+.menu ul {
+  padding-inline-start: 10px !important;
+}
+
+.menu li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu li {
+    display: inline;
+    margin-right: 5px; 
+    background-color: lightblue;
+    color:black;
+    font-weight: bold;
+    height: 40px;
+    line-height: 2px; 
+    padding: 0 2px; 
+    border-radius: 5px; 
+  }
+  
+  
+  
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: center; 
+    vertical-align: middle; 
+    padding: 8px;
+}
+
+#boton_de_compra {
+  text-decoration: none;
+  border :2px solid black;
+  color : black;
+  background-color: greenyellow;
+  border-radius: 5px;
+  padding : 5px;
+  width: fit-content;
+  margin: 5px 40px;
+  display: inline-block
+}
+
+#submitcomprar {
+  width: 300px;
+  display:inline-block
+}
+
+#identificadordelcarrito {
+  display:inline-block
+}
+
+#login {
+  display:inline-block
+}
+
+.olvidoPass {
+  text-decoration: none;
+  border :1px solid black;
+  color : black;
+  background-color:lightgray;
+  border-radius: 5px;
+  padding : 3px;
+  width: fit-content;
+  margin: 25px 85px;
+  display:block;
+  height: 15px;
+
+}
+.archivo-container {
+display:inline-flex;
+}
+.tipoArchivo {
+  height: fit-content;
+}
+.tipoDocumento {
+  height: fit-content;
+}
+.archivos {
+  height: 22px;
+}

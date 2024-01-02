@@ -1,0 +1,26 @@
+{{>menu}}
+<br> 
+<h2>Login de usuario :</h2>
+<hr>
+<br> 
+{{#if error}}
+<div class=error>
+    {{errorDetail}}
+</div>
+{{/if}}
+
+{{#if mostrarMensaje}}
+<div class=mensaje>
+{{mensaje}}
+</div>
+{{/if}}
+
+<form id='login' action="/api/sesions/login" method="post"> 
+<input type="email" name="email" placeholder="email">
+<input type="password" name="password" placeholder="password">
+
+<input type="submit" value="Login" >
+</form>
+
+<a class='olvidoPass' href="/forgot"> Me olvide la contraseña </a>
+

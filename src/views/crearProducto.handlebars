@@ -1,0 +1,43 @@
+{{>menu}}
+<br>
+<h2>Crear un producto nuevo</h2>
+<hr>
+<br> 
+{{#if error}}
+<div class=error>
+    {{errorDetail}}
+</div>
+{{/if}}
+
+<form action="/api/products" method="post" > 
+
+<label for="title"> Título</label>
+<input type="text" name="title" placeholder="Título del producto">
+<br> <br>
+<label for="description"> Descripción</label>
+<input type="text" name="description" placeholder="Descripción del producto">
+<br> <br>
+<label for="code"> Código del producto</label>
+<input type="text" name="code" placeholder="Código de producto">
+<br> <br>
+<label for="price"> Precio </label>
+<input type="number" name="price" placeholder="Precio"> 
+<br> <br>
+<label for="stock"> Existencias </label>
+<input type="number" name="stock" placeholder="Existencias">
+<br> <br>
+<label for="category"> Categoría </label>
+<input type="text" name="category" placeholder="Categoría del producto">
+<br> <br>
+<label for="thumbail"> URL de Imagenes </label>
+<input type="text" name="thumbnail" placeholder="Dirección URL de la imagen ">
+<br> <br>
+<label for="status"> Status </label>
+<select name="status">
+  <option value="true" >Activo</option>
+  <option value="false" >Inactivo</option>
+</select>
+
+<br> <br>
+<input type="submit" value="Crear Producto" >
+</form>

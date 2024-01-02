@@ -1,0 +1,99 @@
+{{>menu}}
+<br>
+<h2>Modificar un producto </h2>
+<hr>
+<br> 
+{{#if error}}
+<div class=error>
+    {{errorDetail}}
+</div>
+{{/if}}
+<h3> Identificador del producto 
+<strong> {{productId}} </strong>
+</h3>
+<form id="updateProductForm" action="/api/products/{{productId}}" method="post">
+<label for="title"> Título</label>
+<input type="text" name="title" placeholder="{{title}}">
+<br> <br>
+<label for="description"> Descripción</label>
+<input type="text" name="description" placeholder="{{description}}">
+<br> <br>
+<label for="code"> Código del producto</label>
+ <span>{{code}}</span> 
+<br> <br>
+<label for="price"> Precio </label>
+<input type="number" name="price" placeholder={{price}}> 
+<br> <br>
+<label for="stock"> Existencias </label>
+<input type="number" name="stock" placeholder={{stock}}>
+<br> <br>
+<label for="category"> Categoría </label>
+<input type="text" name="category" placeholder="{{category}}">
+<br> <br>
+<label for="thumbnail"> URL de Imagenes </label>
+<input type="text" name="thumbnail" placeholder="{{thumbnail}}">
+</select>
+
+<br> <br>
+<input type="submit" value="Modificar" >
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const updateProductForm = document.getElementById("updateProductForm");
+
+    if (updateProductForm) {
+        updateProductForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = {};
+
+            if (updateProductForm.elements.title.value.trim() !== "") {
+                formData.title = updateProductForm.elements.title.value;
+            }
+
+            if (updateProductForm.elements.description.value.trim() !== "") {
+                formData.description = updateProductForm.elements.description.value;
+            }
+
+            if (updateProductForm.elements.price.value.trim() !== "") {
+                formData.price = updateProductForm.elements.price.value;
+            }
+
+            if (updateProductForm.elements.stock.value.trim() !== "") {
+                formData.stock = updateProductForm.elements.stock.value;
+            }
+
+            if (updateProductForm.elements.category.value.trim() !== "") {
+                formData.category = updateProductForm.elements.category.value;
+            }
+
+            if (updateProductForm.elements.thumbnail.value.trim() !== "") {
+                formData.thumbnail = updateProductForm.elements.thumbnail.value;
+            }
+
+
+            const productId = "{{productId}}";
+
+            fetch(`/api/products/${productId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData) // Convierte el objeto a JSON
+            })
+            .then(function (response) {
+                if (response.ok) {
+                    console.log ('modificación exitosa');
+                } else {
+                    console.log ('error en la modificación');
+                }
+            })
+            .catch(function (error) {
+                console.error("Error al realizar la solicitud PUT:", error);
+            });
+        });
+    }
+});
+
+</script>

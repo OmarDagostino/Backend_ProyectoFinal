@@ -1,0 +1,51 @@
+{{>menu}}
+<h3> 
+<strong> Modificar Productos </strong>
+
+</h3>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Identificador</th> 
+                <th>Código</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Existencias</th>
+                <th>Modificar</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            {{#each renderedProducts}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{code}}</td>
+                    <td>{{title}}</td>
+                    <td>{{description}}</td>
+                    <td>{{category}}</td>
+                    <td>{{price}}</td>                    
+                    <td>{{stock}}</td>
+                    <td>
+                        <button class="modificarButton" data-productid="{{_id}}"> modificar </button>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modificarButtons = document.querySelectorAll(".modificarButton");
+            modificarButtons.forEach(function (button) {
+
+                button.addEventListener("click", function () {
+                const productId = button.getAttribute("data-productid");
+                window.location.href = `/modificarProducto?productId=${productId}`;
+                });
+            });
+        })
+
+    </script>
+</body>
