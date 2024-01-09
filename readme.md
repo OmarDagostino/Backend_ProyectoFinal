@@ -4,10 +4,7 @@
 ## Autor : Omar D'Agostino
 
 ## Funcionalidades agregadas 
-    * Implementacion de la ruta api/users/:uid/documents para subir multiples archivos con Multer. Se creo la vista upload con handlebars para enviar el formulario correspondiente. En el mismo se elige el tipo de archivo entre documentos, imagen del perfil o imagen de productos, y se graba en la carpeta correspondiente (cuya carpeta raiz es upload) según corresponda. Si las carpetas no existen, las crea.  El nombre del archivo guardado tiene la siguiente estructura : userId.fechayhora.nombre del archivo original.extensión del archivo original. El link del archivo y su nombre de archivo se guarda en el registro del usuario en el array documents.  
-
-    * En la vista de los datos del usuario se modifico el controlador que maneja el cambio a usuario premium (pulsando el boton de upgrade) para permitir hacer este cambio solo a los usuarios que hayan subido documentos con nombres : identificacion, estadoCuenta y domicilio.
-    - 
+    *Proyecto Final
    
 
 ## Tecnologías utilizadas : 
