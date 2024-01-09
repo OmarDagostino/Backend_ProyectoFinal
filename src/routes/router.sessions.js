@@ -1,13 +1,10 @@
 import {Router} from 'express';
 import bodyParser from 'body-parser';
 import usersController from '../controllers/usersController.js';
-import { authUser } from '../middlewares/authMiddle.js';
 export const router = Router ();
 router.use(bodyParser.urlencoded({ extended: true }));
 import passport from 'passport'; 
 import dtousuario from '../middlewares/dtoUsuario.js';
-import upload from '../middlewares/uploadFiles.js';
-
 
 router.get ('/errorLogin', usersController.errorLogin);
 
@@ -56,17 +53,8 @@ router.get('/current1', usersController.current1)
 
 router.get('/current',dtousuario, usersController.current)
 
-// actualizar tipo de usuario
-
-router.get('/premium/:email',authUser, usersController.premium)
-
 // re-establecer contraseña
 
 router.post('/forgot', usersController.forgot)
 
 router.post('/recuperacion', usersController.recuperacion)
-
-// subir documentos con información de los usuarios
-
-router.post('/users/:uid/documents',upload.uploader.array('archivos1'),usersController.documents)
-  

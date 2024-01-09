@@ -5,8 +5,10 @@ import __dirname from './util.js';
 import apiCartRouter from './routes/router.cart.js';
 import apiProductRouter from './routes/router.product.js';
 import apiLoggerRouter from './routes/router.logger.js';
+import { setLoggerLevel } from './errorManagement/logger.js';
 import viewsRouter from './routes/router.views.js';
 import {router as sesionsRouter} from './routes/router.sessions.js';
+import {router as usersRouter} from './routes/router.users.js'
 import session from 'express-session';
 import ConnectMongo from 'connect-mongo';
 import inicializaPassport from './middlewares/passport-config.js';
@@ -34,6 +36,15 @@ app.use(session({
   ttl:3600
   }))
 inicializaPassport ();
+
+let levelSegunEntorno
+switch (config.MODE_OPTION) {
+  case 'production' : levelSegunEntorno='info';
+  case 'stagging' : levelSegunEntorno='debug';
+  case 'development' : levelSegunEntorno='debug';
+  case 'mocha' : levelSegunEntorno='error';
+}
+setLoggerLevel(levelSegunEntorno);
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,6 +53,7 @@ app.use('/',viewsRouter);
 app.use('/api', apiLoggerRouter);
 app.use('/api', apiCartRouter);
 app.use('/api', apiProductRouter);
+app.use('/api', usersRouter)
 
 app.use (errorHandler)
 

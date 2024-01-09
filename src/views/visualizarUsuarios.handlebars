@@ -1,0 +1,36 @@
+{{>menu}}
+<h3> 
+Usuarios 
+</h3>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Identificador</th> 
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo de Usuario</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Identificador del carrito</th>
+                <th>Ultima conexión</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            {{#each usersToRender}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{name}}</td>
+                    <td>{{last_name}}</td>
+                    <td>{{typeofuser}}</td>
+                    <td>{{email}}</td>
+                    <td>{{age}}</td>                    
+                    <td>{{cartId}}</td>
+                    <td>{{last_connection}}</td>
+                    
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+</body>

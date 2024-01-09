@@ -1,7 +1,6 @@
 import multer from "multer";
 import path from 'path';
 import fs from 'fs';
-import { now } from "mongoose";
 import { usersServices } from '../services/usersServices.js';
 import { ObjectId } from 'mongodb';
 
@@ -40,7 +39,7 @@ let destinationPath
 // Configuración de multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
- 
+
   const tipoArchivo = req.body.tipoArchivo1;
   
   if (Array.isArray(req.body.tipoArchivo1)) {
@@ -71,15 +70,33 @@ const storage = multer.diskStorage({
     
 
     destinationPath = path.join(uploadFolder, folderx);
+    
         
     cb(null, destinationPath);
   },
   filename: function (req, file, cb) {
+   
+    if (Array.isArray(req.body.tipoArchivo1)) {
+      indice = req.body.tipoArchivo1.length - 1
+      nombreDelDocumento = req.body.tipoDocumento1[indice]
+      if(req.body.otroTexto1[indice] !== '') {
+          nombreDelDocumento = req.body.otroTexto1[indice]
+      }
+      tipoDelArchivo = req.body.tipoArchivo1[indice]
+  
+    } else {
+      nombreDelDocumento = req.body.tipoDocumento1
+      if(req.body.otroTexto1 !== '') {
+          nombreDelDocumento = req.body.otroTexto1
+        }
+      tipoDelArchivo = req.body.tipoArchivo1
+    }
     userId = req.params.uid 
     const now = new Date();
     const fechaComoString = now.toISOString().replace(/[^a-zA-Z0-9]/g, '');
     const nombreDelArchivoAGuardar = userId + '.' + fechaComoString + '.' + path.basename(file.originalname);
-    linkDelArchivo= path.join(destinationPath, nombreDelArchivoAGuardar)
+    const linkArchivo= path.join(destinationPath, nombreDelArchivoAGuardar)
+    linkDelArchivo = linkArchivo.replace(/\\/g, '/');
     cb(null,nombreDelArchivoAGuardar);
     let validObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
     if (validObjectId) 

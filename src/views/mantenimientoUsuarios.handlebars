@@ -1,0 +1,87 @@
+{{>menu}}
+<h3> 
+Mantenimiento de Usuarios 
+</h3>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Identificador</th> 
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo de usuario</th>
+                <th>Cambio de tipo de usuario</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Ultima conexión</th>
+                <th>Eliminar usuario</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            {{#each usersToRender}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{name}}</td>
+                    <td>{{last_name}}</td>
+                    <td>{{typeofuser}}</td>
+                    <td>
+                        <button onclick="cambioTOU('{{_id}}')">cambiar</button>
+                    </td>
+                    <td>{{email}}</td>
+                    <td>{{age}}</td>                    
+                    <td>{{last_connection}}</td>
+                    <td>
+                        <button onclick="eliminarUsuario('{{_id}}')">Eliminar</button>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <script>
+        async function eliminarUsuario(userId) {
+            try {
+                const response = await fetch(`/api/users/eliminarUsuario`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: userId }),
+                });
+
+                if (response.ok) {
+                    
+                    window.location.href = '/mantenimientoUsuarios';
+                } else {
+                
+                    console.error('Error al eliminar usuario:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error de red al eliminar usuario:', error);
+            }
+        }
+async function cambioTOU(userId) {
+            try {
+                
+                const response = await fetch(`/api/users/maintenanceTOU`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: userId }),
+                });
+
+                if (response.ok) {
+                    
+                    window.location.href = '/mantenimientoUsuarios';
+                } else {
+                
+                    console.error('Error al cambiar el tipo de usuario:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error de red al cambiar el tipo de usuario:', error);
+            }
+        }
+
+    </script>
+</body>

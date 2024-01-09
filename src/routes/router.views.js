@@ -1,12 +1,12 @@
 import express from 'express';
 import handlebars from 'express-handlebars';
-import {Router} from 'express';
 import path from 'path';
-import {authUser,auth,auth2 } from '../middlewares/authMiddle.js';
+import {authUser,authAdmin, auth,auth2 } from '../middlewares/authMiddle.js';
 import { validaJWT } from '../middlewares/validaJWT.js';
 import __dirname from '../util.js';
 import {cartModel} from '../models/cart.model.js';
 import {productModel} from '../models/product.model.js';
+import { userModel } from '../models/user.model.js';
 import { ObjectId } from 'mongodb';
 
 const router = express.Router()
@@ -101,7 +101,7 @@ router.get('/upload',auth, (req,res)=> {
 })
 
 // ruta para la vista del administrador
-router.get('/admin', auth, (req,res)=>{
+router.get('/admin', authAdmin, (req,res)=>{
    
   menuManagement (req,res,[0,0,0,0,0,0,0,1,0,0,0,0])
   let typeofuser=req.session.usuario.typeofuser
@@ -109,7 +109,7 @@ router.get('/admin', auth, (req,res)=>{
   res.status(200).render('admin',{typeofuser,mostrarMenu0,mostrarMenu1,mostrarMenu2,mostrarMenu3,mostrarMenu4,mostrarMenu5,mostrarMenu6,mostrarMenu7,mostrarMenu8,mostrarMenu9,mostrarMenu10,mostrarMenu11});
 });
 
-// ruta para la vista de visualizar productos para el administrador
+// ruta para la vista de visualizar productos para el administrador o usuario premium
 router.get('/visualizarProductos',auth,async (req,res)=> {
   
   menuManagement (req,res,[0,0,0,0,0,0,0,1,1,0,0,0])
@@ -137,6 +137,60 @@ router.get('/visualizarProductos',auth,async (req,res)=> {
   res.status(200).render('visualizarProductos',{renderedProducts, typeofuser, mostrarMenu0,mostrarMenu1,mostrarMenu2,mostrarMenu3,mostrarMenu4,mostrarMenu5,mostrarMenu6,mostrarMenu7,mostrarMenu8,mostrarMenu9,mostrarMenu10,mostrarMenu11});
 })
 
+// ruta para mostrar los usuarios al administrador 
+
+router.get('/visualizarUsuarios',authAdmin, async (req,res)=>{
+ 
+  menuManagement (req,res,[0,0,0,0,0,0,0,1,1,0,0,0])
+
+  const usersToR = await  userModel.find({}).exec();
+  const usersToRender = usersToR.map(usersToR => {
+    return {
+          _id: usersToR._id,
+          name: usersToR.name,
+          last_name: usersToR.last_name,
+          typeofuser: usersToR.typeofuser,
+          email: usersToR.email,
+          age: usersToR.age,
+          cartId: usersToR.cartId,
+          last_connection: usersToR.last_connection
+  }
+})
+
+  let typeofuser=req.session.usuario.typeofuser;
+
+  res.setHeader('Content-Type','text/html');
+  res.status(200).render('visualizarUsuarios',{usersToRender,typeofuser,mostrarMenu0,mostrarMenu1,mostrarMenu2,mostrarMenu3,mostrarMenu4,mostrarMenu5,mostrarMenu6,mostrarMenu7,mostrarMenu8,mostrarMenu9,mostrarMenu10,mostrarMenu11});
+
+})
+
+// ruta para mostrar los usuarios al administrador para hacerle mantenimiento 
+
+router.get('/mantenimientoUsuarios',authAdmin, async (req,res)=>{
+ 
+  menuManagement (req,res,[0,0,0,0,0,0,0,1,1,0,0,0])
+
+  const usersToR = await  userModel.find({}).exec();
+  const usersToRender = usersToR.map(usersToR => {
+    return {
+          _id: usersToR._id,
+          name: usersToR.name,
+          last_name: usersToR.last_name,
+          typeofuser: usersToR.typeofuser,
+          email: usersToR.email,
+          age: usersToR.age,
+          cartId: usersToR.cartId,
+          last_connection: usersToR.last_connection
+  }
+})
+
+  let typeofuser=req.session.usuario.typeofuser;
+
+  res.setHeader('Content-Type','text/html');
+  res.status(200).render('mantenimientoUsuarios',{usersToRender,typeofuser,mostrarMenu0,mostrarMenu1,mostrarMenu2,mostrarMenu3,mostrarMenu4,mostrarMenu5,mostrarMenu6,mostrarMenu7,mostrarMenu8,mostrarMenu9,mostrarMenu10,mostrarMenu11});
+
+})
+
 // ruta para crear producto nuevo
 router.get('/crearProducto',auth,async (req,res)=> {
  
@@ -155,6 +209,8 @@ router.get('/crearProducto',auth,async (req,res)=> {
     {res.status(200).render('crearProducto',{error,errorDetail, typeofuser, mostrarMenu0,mostrarMenu1,mostrarMenu2,mostrarMenu3,mostrarMenu4,mostrarMenu5,mostrarMenu6,mostrarMenu7,mostrarMenu8,mostrarMenu9,mostrarMenu10,mostrarMenu11});}
   }
 })
+
+
 
 // ruta para modificar productos
 router.get('/modificarProductos',auth,async (req,res)=> {
@@ -460,4 +516,4 @@ router.get('/carts', auth, async (req,res)  => {
   }
  
 });
-export default router;
+export default router

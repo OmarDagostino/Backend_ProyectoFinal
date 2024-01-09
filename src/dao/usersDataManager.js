@@ -55,6 +55,18 @@ async obtenerUsuarioPorCartid   (CartId)
 
 };
 
+async obtenerUsuarios () {
+  try {
+    
+    const allUsers = await userModel.find({}).exec();
+    
+    return allUsers
+   }
+   catch (error) {
+    console.error(`Error en el servidor ${error}`);
+    }
+}
+
 async crearUsuario  (name,email,password,typeofuser,last_name,age)
 {
   let cartId
@@ -104,6 +116,57 @@ async actualizarUsuario  (email,usuario)
     console.error(error);
     }
 }
+
+async actualizarType (id)
+{  
+    try {
+    const existingUser = await userModel.findOne({ _id : id}).exec();
+    
+    if (existingUser) {  
+      
+      if (existingUser.typeofuser==='premium') {  existingUser.typeofuser= 'user'}     
+      else {if (existingUser.typeofuser==='user') {  existingUser.typeofuser= 'premium'}}     
+   
+      await existingUser.save();
+      return ;
+    } else {
+      console.error (`**** usuario ${id} no existe ****`)
+      return 
+    }
+   }
+   catch (error) {
+    console.error('*error en el servidor inesperado al tratar de actualizar el tipo de usuario*');
+    console.error(error);
+    }
+}
+
+async eliminarUsuario (id)
+{  
+    try {
+    const existingUser = await userModel.findOne({ _id : id}).exec();
+    
+    if (existingUser) {      
+      let cartid = existingUser.cartId    
+      const existingCart = await cartModel.findOne({_id : cartid}).exec();
+        if (existingCart) {
+          await existingCart.deleteOne({_id : cartid}); 
+        } else {
+          console.error (`**** carrito del usuario ${id} cuya _id es ${cartid} no existe ****`)
+          return;
+        }
+      await existingUser.deleteOne({_id : id});
+      return ;
+    } else {
+      console.error (`**** usuario ${id} no existe ****`)
+      return 
+    }
+   }
+   catch (error) {
+    console.error('*error en el servidor inesperado al tratar de eliminar un usuario*');
+    console.error(error);
+    }
+}
+
 async actualizarUsuarioUltimoLog  (email)
 {  
     try {

@@ -3,7 +3,7 @@ import {productsDataManager as DAOProducts} from '../dao/productsDataManager.js'
 class ProductServices {
 
 constructor (daoProducts) {
-    this.daoProducts = new daoProducts
+    this.daoProducts = new daoProducts ()
 }
 
 async obtenerProductos (combinedFilter, options) {

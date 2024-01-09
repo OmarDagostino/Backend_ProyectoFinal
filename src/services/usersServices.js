@@ -2,7 +2,7 @@ import {usersDataManager as DAOUsers} from "../dao/usersDataManager.js";
 
 class UsersServices {
     constructor (daoUsers) {
-        this.daoUsers= new daoUsers
+        this.daoUsers= new DAOUsers ()
     }
 
     async obtenerUsuarioPorEmail (direccionDeCorreo) {
@@ -20,6 +20,11 @@ class UsersServices {
         return await this.daoUsers.obtenerUsuarioPorCartid (cartId)
     }
 
+    async obtenerUsuarios () {
+        
+        return await this.daoUsers.obtenerUsuarios ()
+    }
+
     async actualizarUsuario (email, usuario) {
         return await this.daoUsers.actualizarUsuario (email,usuario)
     }
@@ -28,6 +33,14 @@ class UsersServices {
     }
     async actualizarDocumentosSubidos  (id,nombre,linkDelArchivo) {
         return await this.daoUsers.actualizarDocumentosSubidos   (id,nombre,linkDelArchivo)
+    }
+
+    async actualizarType (id) {
+        return await this.daoUsers.actualizarType (id)
+    }
+
+    async eliminarUsuario (id) {
+        return await this.daoUsers.eliminarUsuario (id)
     }
 }
 

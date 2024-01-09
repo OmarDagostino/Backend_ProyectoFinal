@@ -4,8 +4,8 @@ import { Command, Option } from 'commander';
 const program = new Command();
 
 program
-  .addOption(new Option("-m, --modo <modo>", "Modo en que corre la app").choices(["development", "staging", "production"]).default('development'))
-  .addOption(new Option("-l, --language <language>", "Idioma de la aplicación").choices(["sp", "en"]).default('en')) 
+  .addOption(new Option("-m, --modo <modo>", "Modo en que corre la app").choices(["development", "staging", "production", "mocha"]).default('development'))
+  .addOption(new Option("-l, --language <language>", "Idioma de la documentación").choices(["sp", "en"]).default('en')) 
   .allowUnknownOption() 
   .parse(process.argv);
 
@@ -35,5 +35,6 @@ GMAIL_PASS : process.env.GMAIL_PASS,
 PORT : process.env.PORT,
 URLRecuperacionPassword : process.env.URLRecuperacionPassword,
 JWT_SECRET : process.env.JWT_SECRET,
-LANGUAGE_OPTION: opciones.language
+LANGUAGE_OPTION: opciones.language,
+MODE_OPTION: opciones.modo
 }

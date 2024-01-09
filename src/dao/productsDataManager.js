@@ -136,7 +136,7 @@ async eliminarProducto (pid)
     }
 
     await product.deleteOne({ _id : productId })
-    console.error(`Producto con ID ${productId} eliminado`)
+    
   }
   } catch (error) {
     console.error(error)

@@ -3,7 +3,6 @@ import {Server} from 'socket.io';
 import { chatModel } from '../../src/models/chat.model.js';
 import express from 'express';
 
-
 // sp dinámica del CHAT
 // en CHAT interaction 
 
@@ -12,17 +11,13 @@ export function chatController(server) {
   let mensajes = [];
   leerMensajes();
   let usuarios = [];
-
   const io = new Server(server);
   app.locals.io = io;
-
   io.on('connection', (socket) => {
     console.log(`se ha conectado un cliente con id ${socket.id}`);
-
     io.on('message', (data) => {
       console.log(data);
     });
-
     socket.on('id', (email) => {
       console.log(`se ha conectado el usuario ${email}`);
       mensajes.push({
@@ -34,7 +29,6 @@ export function chatController(server) {
       socket.broadcast.emit('nuevoUsuario', email);
       mensajes.pop();
     });
-
     socket.on('nuevoMensaje', (mensaje) => {
       mensajes.push(mensaje);
       io.emit('llegoMensaje', mensaje);
@@ -42,17 +36,15 @@ export function chatController(server) {
         user: mensaje.user,
         message: mensaje.message,
       });
-
       newmessage
         .save()
         .then(() => {
           console.log('Nuevo mensaje guardado con éxito:');
         })
         .catch((error) => {
-          console.error('Error inesperado al guardar el mensaje:', error);
-        });
+        console.error('Error inesperado al guardar el mensaje:', error);
+      });
     });
-
     socket.on('disconnect', () => {
       console.log(`se desconecto el cliente con id ${socket.id}`);
       let indice = usuarios.findIndex((usuario) => usuario.id === socket.id);

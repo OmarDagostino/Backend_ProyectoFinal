@@ -1,11 +1,13 @@
+import { setLoggerLevel, logger } from '../src/errorManagement/logger.js'; 
+
 import { describe, it, before } from 'mocha';
 import mongoose from 'mongoose'
 import chai from 'chai';
 import supertest from 'supertest-session';
 import {productModel} from '../src/models/product.model.js';
+import {config} from '../src/config/config.js'
 
-await mongoose.connect('mongodb+srv://omardagostino:laly9853@cluster0.x1lr5sc.mongodb.net/ecommerce1')
-
+mongoose.connect(config.MONGO_URL);
 const expect=chai.expect
 const requester=supertest("http://localhost:8080")
 let productId
@@ -13,6 +15,13 @@ let cartId
 
 describe('Probando el proyecto de comercio electrónico', function () {
   this.timeout(20000);
+
+    before (async function () {
+      
+setLoggerLevel('error');
+logger
+
+    })
 
     after (async function () {
       let response4 = await requester.delete("/api/products/"+`${productId}`)
@@ -25,8 +34,6 @@ describe('Probando el proyecto de comercio electrónico', function () {
       
         let usuarioPrueba={email:"usuarioDePrueba@gmail.com", password:"prueba"}
         let user1 = await requester.post("/api/sesions/login").send(usuarioPrueba)
-        console.log ('** user1.status**', user1.status)
-        console.log ('*** user1.location***', user1.header.location)
         if (user1.status === 302 && user1.header.location === '/api/sesions/errorLogin') {
             let registroPrueba={email:"usuarioDePrueba@gmail.com", password:"prueba",name:"usuario",last_name:"Prueba",age:44}
             let user = await requester.post("/api/sesions/registro").send(registroPrueba)

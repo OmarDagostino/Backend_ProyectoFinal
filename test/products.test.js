@@ -1,9 +1,12 @@
+import { setLoggerLevel } from '../src/errorManagement/logger.js'; 
+
 import { describe, it, before } from 'mocha';
 import mongoose from 'mongoose'
 import chai from 'chai';
 import supertest from 'supertest-session';
+import {config} from '../src/config/config.js'
 
-await mongoose.connect('mongodb+srv://omardagostino:laly9853@cluster0.x1lr5sc.mongodb.net/ecommerce1')
+mongoose.connect(config.MONGO_URL);
 
 const expect=chai.expect
 const requester=supertest("http://localhost:8080")
@@ -12,6 +15,11 @@ let productId
 describe('Probando el proyecto de comercio electrónico', function () {
   this.timeout(20000);
 
+    before (async function () {
+        
+      setLoggerLevel('error');
+      
+          })
     after (async function () {
       let response4 = await requester.delete("/api/products/"+`${productId}`)
     })
