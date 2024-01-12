@@ -1,0 +1,22 @@
+{
+  "diffEditor.ignoreTrimWhitespace": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "better-comments.tags": [
+      {
+        "tag": "Sp",
+        "color": "red",
+        "bold" : "true",
+        "strikethrough": false,
+        "backgroundColor": "yellow"
+      },
+      {
+        "tag": "En",
+        "color": "black",
+        "bold" : "true",
+        "strikethrough": false,
+        "backgroundColor": "Cyan"
+      }
+    ],
+    "window.zoomLevel": 1
+ 
+}

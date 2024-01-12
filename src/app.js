@@ -38,13 +38,26 @@ app.use(session({
 inicializaPassport ();
 
 let levelSegunEntorno
-switch (config.MODE_OPTION) {
-  case 'production' : levelSegunEntorno='info';
-  case 'stagging' : levelSegunEntorno='debug';
-  case 'development' : levelSegunEntorno='debug';
-  case 'mocha' : levelSegunEntorno='error';
+let Modo = config.MODE_OPTION
+switch (Modo) {
+  case "production": 
+    levelSegunEntorno='info';
+    break;
+  case "stagging": 
+    levelSegunEntorno='debug';
+    break;
+  case "development": 
+    levelSegunEntorno='debug';
+    break;
+  case "mocha": 
+    levelSegunEntorno='error';
+    break;
 }
+
 setLoggerLevel(levelSegunEntorno);
+
+
+
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -85,7 +98,6 @@ const swaggerOptions = {
 const specs = swaggerJsdoc(swaggerOptions);
 app.use('/apidocs', swaggerUiExpress.serve,swaggerUiExpress.setup(specs));
 
-// dinámica del CHAT
 chatController(server)
 
 export default app

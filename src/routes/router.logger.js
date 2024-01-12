@@ -1,3 +1,5 @@
+// sp router para hacer la prueba del sistema de logger
+// en Logger test router
 
 import express from 'express';
 import loggerController from '../controllers/loggerController.js';

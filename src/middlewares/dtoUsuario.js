@@ -1,8 +1,6 @@
 export function  dtousuario (req, res, next) {
   try {
     const usuario = req.session.usuario;
-
-
     const usuarioDTO = {
       name: usuario.name,
       email: usuario.email,
@@ -11,7 +9,6 @@ export function  dtousuario (req, res, next) {
       age: usuario.age,
       last_name: usuario.last_name,
     };
-
     req.dto = { usuario: usuarioDTO }; // Almacenar el DTO en el objeto de solicitud
     next();
   } catch (error) {

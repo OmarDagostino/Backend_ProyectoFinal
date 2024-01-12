@@ -41,7 +41,7 @@
             deleteButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
                     const productId = button.getAttribute("data-productid");
-                    fetch(`/api/productS/${productId}`, {
+                    fetch(`/api/products/${productId}`, {
                         
                         method: "DELETE",
                     })
@@ -49,13 +49,12 @@
     if (response.ok) {
         return response.json();
     } else {
-        console.log('Error al ELIMINAR EL PRODUCTO');
+        console.error('Error al ELIMINAR EL PRODUCTO');
         throw new Error('Error al eliminar el producto');
     }
 })
 .then(function (data) {
-    console.log('PRODUCTO ELIMINADO');
-   
+       
     const productTableBody = document.getElementById("productTableBody");
     productTableBody.innerHTML = ""; 
     

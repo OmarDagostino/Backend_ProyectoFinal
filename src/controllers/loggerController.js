@@ -1,3 +1,6 @@
+// sp Controlador para probar el sistema de logger
+// en Logger controller test
+
 import { CustomError } from '../errorManagement/diccionarioDeErrores.js';
 
 const loggerTest = (req, res) => {

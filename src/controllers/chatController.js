@@ -55,7 +55,8 @@ export function chatController(server) {
       }
     });
   });
-
+// sp carga los mensajes guardados hasta el momento
+// en messages load at the last chat
   async function leerMensajes() {
     try {
       const mensajesDB = await chatModel.find({}, 'user message').maxTimeMS(20000).exec();

@@ -21,17 +21,12 @@ const customLevelsOptions = {
 };
 
 let levelSegunEntorno;
-
 export const setLoggerLevel = (level) => {
-
   if (logger[level] && typeof logger[level] === 'function') {
-
-     logger.transports.forEach((transport) => {
+    logger.transports.forEach((transport) => {
       levelSegunEntorno= level;
       transport.level=level;
-    });
-    
-  
+    });  
   }
 };
 
@@ -57,9 +52,9 @@ const transports = [
 ].filter(Boolean); // Filtra los transportes nulos
 
 export let logger = winston.createLogger({
-   levels: customLevelsOptions.levels,
-   transports,
-   });
+  levels: customLevelsOptions.levels,
+  transports,
+  });
 
 export const loggerWithLevel = (level, message) => {
     if (logger[level] && typeof logger[level] === 'function') {
@@ -67,8 +62,3 @@ export const loggerWithLevel = (level, message) => {
       logger[level](message);
     }
   };
-
-
-
-
-

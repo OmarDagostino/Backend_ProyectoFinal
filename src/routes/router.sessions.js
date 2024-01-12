@@ -6,17 +6,22 @@ router.use(bodyParser.urlencoded({ extended: true }));
 import passport from 'passport'; 
 import dtousuario from '../middlewares/dtoUsuario.js';
 
+// sp Login con error
+// en Error login
 router.get ('/errorLogin', usersController.errorLogin);
 
-// Login de Git Hub con error
+// sp Login de Git Hub con error
+// en Error login with Git HUb
 
 router.get ('/errorLoginGitHub', usersController.errorLogin);
 
-// registro con error
+// sp registro con error
+// en error in registration
 
 router.get ('/errorRegistro', usersController.errorRegistro);
 
-// Registro de un nuevo usuario 
+// sp Registro de un nuevo usuario 
+// en new user registration
 
 router.post('/registro', passport.authenticate('registro', {
     failureRedirect: '/api/sesions/errorRegistro',
@@ -24,37 +29,43 @@ router.post('/registro', passport.authenticate('registro', {
     session: false, // Desactiva la creación de sesiones
 }))
 
-// Login de un usuario o del administrador
+// sp Login de un usuario o del administrador
+// en User or administrator login 
 router.post('/login', passport.authenticate('login', { failureRedirect: '/api/sesions/errorLogin' }), usersController.Login)
   
-// Login con GitHub
+// sp Login con GitHub
+// en Git Hub login
 router.get('/loginGitHub', passport.authenticate('loginGitHub', {}), (req, res, next) => { });  
 
-router.get('/callbackGithub',  passport.authenticate('loginGitHub', 
+router.get('/callbackGithub',  
+    passport.authenticate('loginGitHub', 
         { 
-            failureRedirect: '/api/sesions/errorLoginGitHub'
-            
+            failureRedirect: '/api/sesions/errorLoginGitHub'          
         } 
-    ),(req, res, next) => { 
-   
-    req.session.usuario = req.user;
-    return res.redirect ('/products')
-    });  
+    ),
+    (req, res, next) => { 
+        req.session.usuario = req.user;
+        return res.redirect ('/products')
+    }
+);  
 
-// logOut
+// sp logOut
+// en logout
 
 router.get('/logout', usersController.logout)
 
-// mostrar los datos del usuario que esta registrado
+// sp mostrar los datos del usuario que esta registrado para mostrar con handlebars
+// en return user data of current session to show in handlebars
 
 router.get('/current1', usersController.current1)
 
-// mostrar los datos del usuario que esta registrado
+// sp mostrar los datos del usuario que esta registrado
+// en return user data of current session
 
 router.get('/current',dtousuario, usersController.current)
 
-// re-establecer contraseña
-
+// sp re-establecer contraseña
+// en password restart
 router.post('/forgot', usersController.forgot)
 
 router.post('/recuperacion', usersController.recuperacion)

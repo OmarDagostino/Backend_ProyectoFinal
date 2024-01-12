@@ -132,3 +132,6 @@ display:inline-flex;
 .archivos {
   height: 22px;
 }
+#cartId {
+  display:none
+}

@@ -1,0 +1,23 @@
+<h2> Depurar usuarios que en 2 días no han tenido actividad </h2>
+<hr>
+
+<br> 
+{{>menu}}
+<br>
+ <button class="deleteButton" > Depurar  </button>
+
+<script>
+    document.querySelector('.deleteButton').addEventListener('click', function() {
+        fetch(`/api/users/depurarUsuarios`, {
+            method: "DELETE",
+        })
+        .then(function (response) {
+        if (response.ok) {
+            alert ("se ha depurado el archivo de usuarios correctamente");
+        } else {
+            console.error('Error al depurar el archivo de usuarios');
+            throw new Error('Error al depurar el archivo de usuarios');
+        }
+        });
+    })
+</script>

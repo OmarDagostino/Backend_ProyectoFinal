@@ -247,7 +247,7 @@ async function borrarProducto(req, res) {
         const useremail = product.owner;
         const sendermail = config.GMAIL_USER;
         const subject = 'Eliminación de un producto de su portfolio en Comercio Electrónico';
-        const text = `Su producto con identificación ${product._id}, titulo ${product.title} y descripción ${product.description} ha sido eliminado de su protdolio. Saludos Cordiales`;
+        const text = `Su producto con identificación ${product._id}, titulo ${product.title} y descripción ${product.description} ha sido eliminado de su portfolio. Saludos Cordiales`;
         await transport.sendMail({
           from: sendermail,
           to: useremail,
@@ -274,7 +274,8 @@ async function borrarProducto(req, res) {
   }
 };
 
-// Función para validar el formato de un correo electrónico
+// sp Función para validar el formato de un correo electrónico
+// en Email format check function
 function esCorreoElectronico(correo) {
   const expresionRegular = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return expresionRegular.test(correo);

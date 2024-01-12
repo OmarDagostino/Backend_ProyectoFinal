@@ -83,14 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify(formData) // Convierte el objeto a JSON
             })
             .then(function (response) {
-                if (response.ok) {
-                    console.log ('modificación exitosa');
-                } else {
-                    console.log ('error en la modificación');
+                if (!response.ok) {
+                    console.error ('error inesperado en la modificación');
                 }
             })
             .catch(function (error) {
-                console.error("Error al realizar la solicitud PUT:", error);
+                console.error("Error inesperado al realizar la solicitud PUT:", error);
             });
         });
     }

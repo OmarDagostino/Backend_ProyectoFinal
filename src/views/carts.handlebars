@@ -1,22 +1,23 @@
 {{>menu}}
 <body>
+    <h4 id="cartId">{{cart.cartId}}</h4>
     <h4 id="identificador del carrito ">
         Identificador del carrito 
     
-    <strong> 
-        {{cart.cartId}}
-   
-        <form id=submitcomprar action="api/carts/{{cart.cartId}}/purchase" method="POST">
-            <button id=boton_de_compra type="submit">Comprar</button>
-        </form>
-        
-    </strong>
+        <strong> 
+            {{cart.cartId}}
+    
+            <form id=submitcomprar action="api/carts/{{cart.cartId}}/purchase" method="POST">
+                <button id=boton_de_compra type="submit">Comprar</button>
+            </form>
+            
+        </strong>
     </h4>
-<h4>
-    <strong>
-        {{mensaje}}
-    </strong>
-</h4>
+    <h4>
+        <strong>
+            {{mensaje}}
+        </strong>
+    </h4>
 
     <table>
         <thead>
@@ -27,6 +28,7 @@
                 <th>Precio</th>
                 <th>Código</th>
                 <th>Cantidad comprada</th>
+                <th>Sacar del carrito</th>
             </tr>
         </thead>
         <tbody id="productTableBody">
@@ -38,9 +40,39 @@
                     <td>{{this.price}}</td>
                     <td>{{this.code}}</td>
                     <td>{{this.cantidad}}</td>
+                    <td>
+                        <button class="eliminarProducto" data-productid="{{this.productId}}"> Sacar del carrito </button>
+                   </td>
                 </tr>
             {{/each}}
         </tbody>
     </table>
-</body>
+    <script>
+        const IDCart = document.getElementById('cartId');
+        const idCart = IDCart.innerHTML;
+        document.addEventListener("DOMContentLoaded", function () {
+            const deleteButtons = document.querySelectorAll(".eliminarProducto");
+            deleteButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const productId = button.getAttribute("data-productid");
+                    const cartId = button.getAttribute("data-cartId");
+                    fetch(`/api/carts/${idCart}/product/${productId}`, { 
+                        method: "DELETE",
+                    })
+                    .then(function (response) {
+                        if (response.ok) {
+                            alert('Producto sacado del carrito');
+                            location.reload();
+                        } else {
+                            console.error('Error inesperado al sacar un producto del carrito');
+                            throw new Error('Error inesperado al sacar un producto del carrito');
+                        }
+                    })
+                });
+            });
+        });
+
+        
+
+    </script>
 </body>

@@ -70,10 +70,9 @@
     nuevoDocumento.addEventListener('change', function() {
         checkOtro(this);
     });
-    // nuevoContainer.appendChild(document.createElement('br'));
-    // nuevoContainer.appendChild(document.createElement('br'));
+    
     nuevoContainer.appendChild(document.createTextNode(`(${nuevoIndex}) `));
-    // nuevoContainer.appendChild(document.createElement('br'));
+    
     nuevoContainer.appendChild(document.createTextNode('Nombre:'));
     nuevoContainer.appendChild(nuevoDocumento);
 
@@ -81,14 +80,14 @@
     nuevoOtroInput.classList.add('otroInput');
     nuevoOtroInput.style.display = 'none';
     nuevoOtroInput.innerHTML = document.querySelector('.otroInput').innerHTML;
-    // nuevoContainer.appendChild(document.createElement('br'));
+    
     nuevoContainer.appendChild(nuevoOtroInput);
 
     const nuevoArchivo = document.createElement('select');
     nuevoArchivo.name = `tipoArchivo1`;
     nuevoArchivo.classList.add('tipoArchivo');
     nuevoArchivo.innerHTML = document.querySelector('.tipoArchivo').innerHTML;
-    // nuevoContainer.appendChild(document.createElement('br'));
+    
     nuevoContainer.appendChild(document.createTextNode('Tipo:'));
     nuevoContainer.appendChild(nuevoArchivo);
 
@@ -96,12 +95,12 @@
     nuevoArchivos.type = 'file';
     nuevoArchivos.name = `archivos1`;
     nuevoArchivos.classList.add('archivos');
-    // nuevoArchivos.multiple = true;
+    
     nuevoArchivos.addEventListener('change', function() {
         agregarNuevoInput(this);
     });
 
-    // nuevoContainer.appendChild(document.createElement('br'));
+    
     nuevoContainer.appendChild(document.createTextNode('Seleccionar:'));
     nuevoContainer.appendChild(nuevoArchivos);
 

@@ -106,11 +106,14 @@ async function premium (req,res) {
     const direccionDeCorreo={username:email}
     const usuario = await usersServices.obtenerUsuarioPorEmail(direccionDeCorreo)
     if (usuario) { 
-      // Verificar si al menos hay un elemento con name: 'identificacion'
+      // sp Verificar si al menos hay un elemento con name: 'identificacion'
+      // en at least one element with the name "identificacion" has to be present
       let existeIdentificacion = usuario.documents.some(elemento => elemento.name === 'identificacion');
-      // Verificar si al menos hay un elemento con name: 'estadoCuenta'
+      // sp Verificar si al menos hay un elemento con name: 'estado de cuenta'
+      // en at least one element with the name "estado de cuenta" has to be present
       let existeEstadoCuenta = usuario.documents.some(elemento => elemento.name === 'estadoCuenta');
-      // Verificar si al menos hay un elemento con name: 'domicilio'
+      // sp Verificar si al menos hay un elemento con name: 'domicilio'
+      // en at least one element with the name "domicilio" has to be present
       let existeDomicilio = usuario.documents.some(elemento => elemento.name === 'domicilio');
       if (usuario.typeofuser==='user') {
         if (!existeIdentificacion || !existeEstadoCuenta || !existeDomicilio) {

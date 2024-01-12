@@ -24,57 +24,49 @@ Swal.fire({
  
     inputValidator: (value) => {
         if (!value) {
-        return 'Debes ingresar una dirección de correo electrónico';
+            return 'Debes ingresar una dirección de correo electrónico';
         }
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(value)) {
-        return 'Ingresa una dirección de correo electrónico válida';
+            return 'Ingresa una dirección de correo electrónico válida';
         }
-        },
-        }).then((resultado) => {
-            if (resultado.isConfirmed) {
-                email=resultado.value,
-                document.title=email,
-                inputMensajes.focus(),
-                socket.emit ('id', email)
-            }
-        
-            socket.on ('bienvenida',mensajes =>{
-                    let txt = ''
-                    mensajes.forEach(mensaje=> {
-                        txt+= (`<p class="mensaje"> <strong> ${mensaje.user} </strong> : <i> ${mensaje.message} </i> </P> <br> `)
-                    })
-                    divMensajes.innerHTML = txt
-                    divMensajes.scrollTop = divMensajes.scrollHeight;
-
-                } )
-
-            socket.on ('nuevoUsuario',email =>{
-                Swal.fire ({
-                    text: `Se ha conectado ${email}`,
-                    toast:true,
-                    position:"top-right"
-                })
-
-            } )
-
-            socket.on ('desconeccion',email =>{
-                Swal.fire ({
-                    text: `Se ha desconectado el usuario ${email}`,
-                    toast:true,
-                    position:"top-right"
-                })
-
-            } )
-
-
-            socket.on ('llegoMensaje', mensaje => {
-                let txt = ''
-                
+    },
+}).then((resultado) => {
+    if (resultado.isConfirmed) {
+        email=resultado.value,
+        document.title=email,
+        inputMensajes.focus(),
+        socket.emit ('id', email)
+    }
+    socket.on ('bienvenida',mensajes =>{
+            let txt = ''
+            mensajes.forEach(mensaje=> {
                 txt+= (`<p class="mensaje"> <strong> ${mensaje.user} </strong> : <i> ${mensaje.message} </i> </P> <br> `)
-            
-                divMensajes.innerHTML += txt
-                divMensajes.scrollTop = divMensajes.scrollHeight;
             })
-   })
+            divMensajes.innerHTML = txt
+            divMensajes.scrollTop = divMensajes.scrollHeight;
+        })
+    socket.on ('nuevoUsuario',email =>{
+        Swal.fire ({
+            text: `Se ha conectado ${email}`,
+            toast:true,
+            position:"top-right"
+        })
+    })
+    socket.on ('desconeccion',email =>{
+        Swal.fire ({
+            text: `Se ha desconectado el usuario ${email}`,
+            toast:true,
+            position:"top-right"
+        })
+    })
+    socket.on ('llegoMensaje', mensaje => {
+        let txt = ''
+        
+        txt+= (`<p class="mensaje"> <strong> ${mensaje.user} </strong> : <i> ${mensaje.message} </i> </P> <br> `)
+    
+        divMensajes.innerHTML += txt
+        divMensajes.scrollTop = divMensajes.scrollHeight;
+    })
+})
 

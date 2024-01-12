@@ -49,10 +49,8 @@
                         method: "POST",
                     })
                     .then(function (response) {
-                        if (response.ok) {
-                            console.log ('agregado al carrito')
-                        } else {
-                            console.log ('no agregado al carrito')
+                        if (!response.ok)  {
+                            console.error ('no se ha agregado al carrito')
                         } 
                     })
                     .catch(function (error) {

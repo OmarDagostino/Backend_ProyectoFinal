@@ -2,23 +2,24 @@ import {Router} from 'express';
 import { authAdmin } from '../middlewares/authMiddle.js';
 import productsController from '../controllers/productsController.js'
 import { body, validationResult } from 'express-validator';
-
 const router = Router ()
-
 import bodyParser from 'body-parser';
-
 router.use(bodyParser.urlencoded({ extended: true }));
 
-// GET para retornar varios productos o todos
+// sp GET para retornar varios productos o todos
+// en GET to return several products or all of them
 router.get('/products', productsController.getProducts);
 
-// GET para retornar un producto por su ID
+// sp GET para retornar un producto por su ID
+// en GET to return a product by ID
 router.get('/products/:pid', productsController.getProductById);
 
-// GET para retornar 100 productos imaginarios creados con Fake-js
+// sp GET para retornar 100 productos imaginarios creados con Fake-js
+// en GET to return 100 fake products created by Faker.js
 router.get ('/mockingproducts', productsController.getMockingProducts)
 
-// POST para crear un nuevo producto
+// sp POST para crear un nuevo producto
+// en POST to create a new product
 
 router.post('/products',authAdmin,
   [
@@ -44,13 +45,15 @@ router.post('/products',authAdmin,
 );
 
   
-// PUT para actualizar un producto por su ID
+// sp PUT para actualizar un producto por su ID
+// en PUT to update a product by ID
 router.put('/products/:pid',authAdmin, async (req,res)=> { 
 
   await productsController.actualizarProducto (req,res)
 });
 
-// DELETE para eliminar un producto por su ID
+// sp DELETE para eliminar un producto por su ID
+// en DELETE to erase a product by ID
 router.delete('/products/:pid',authAdmin, productsController.borrarProducto);
 
 export default router;
