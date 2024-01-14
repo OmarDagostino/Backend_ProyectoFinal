@@ -93,14 +93,14 @@ paths:
       responses:
         '201':
           description: Carrito actualizado correctamente
+        '401':
+          description: El producto requerido no tiene stock
         '403':
           description: No se puede comprar un producto del mismo usuario que lo creo
         '404':
           description: El carrito requerido no existe
         '405':
           description: El producto requerido no existe
-        '407':
-          description: El producto requerido no tiene stock
         '451':
           description: El identificador del carrito no es válido (debe ser un string con formato válido de un object ID de MongoDB)
         '452':
@@ -240,7 +240,6 @@ components:
       properties:
         products:  
           type: array
-          required: true
           items: 
             type: object
             properties:

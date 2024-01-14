@@ -83,6 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify(formData) // Convierte el objeto a JSON
             })
             .then(function (response) {
+                if (response.ok) {
+                    alert (' Producto modificado')
+                }
                 if (!response.ok) {
                     console.error ('error inesperado en la modificación');
                 }

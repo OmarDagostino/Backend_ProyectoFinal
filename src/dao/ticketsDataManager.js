@@ -17,7 +17,7 @@ mongoose.connect(config.MONGO_URL);
 export class ticketsDataManager 
 { 
   // sp obtener un ticket por su ID
-  // en get a ticket by ID
+  // en get ticket by ID
   async obtenerTicket (tid) 
   {
     try {
@@ -39,7 +39,7 @@ export class ticketsDataManager
   };
 
   // sp obtener el próximo número de ticket y actualizar contador 
-  // en get the next ticket number and udate register
+  // en get next ticket number and update counter
 
   async obtenerCodigoMayor () 
   { 
@@ -62,7 +62,7 @@ export class ticketsDataManager
   };
 
   // sp Crear un nuevo ticket
-  // en New ticket creation
+  // en New ticket 
   async crearTicket (newticket) 
   {
     try {

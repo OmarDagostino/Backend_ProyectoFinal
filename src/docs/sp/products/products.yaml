@@ -283,30 +283,30 @@ components:
               status:
                 type: boolean
                 description : estado del producto
-              totalPages: 
-                type: integer
-                description: cantidad de paginas que tiene la consulta
-              prevPage:
-                type: integer
-                description: número de la página previa (o null si no existiera)
-              nextPage:
-                type: integer
-                description: número de la próxima página (o null si no existiera)
-              page:
-                type: integer
-                description: número de la página actual
-              hasPrevPage: 
-                type: boolean
-                description: existencia de la página previa
-              hasNextPage: 
-                type: boolean
-                description: existencia de próxima página
-              prevLink: 
-                type: string
-                description: URL de la página previa
-              nextLink: 
-                type: string
-                description: URL de la próxima página
+        totalPages: 
+          type: integer
+          description: cantidad de paginas que tiene la consulta
+        prevPage:
+          type: integer
+          description: número de la página previa (o null si no existiera)
+        nextPage:
+          type: integer
+          description: número de la próxima página (o null si no existiera)
+        page:
+          type: integer
+          description: número de la página actual
+        hasPrevPage: 
+          type: boolean
+          description: existencia de la página previa
+        hasNextPage: 
+          type: boolean
+          description: existencia de próxima página
+        prevLink: 
+          type: string
+          description: URL de la página previa
+        nextLink: 
+          type: string
+          description: URL de la próxima página
       example:
         status1: success
         payload: 

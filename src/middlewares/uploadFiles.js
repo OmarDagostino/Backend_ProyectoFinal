@@ -33,7 +33,7 @@ function createFolders() {
 createFolders();
 
 // sp definicion de variables
-// en variables declaration
+// en set up variables
 let nombreDelDocumento = ''
 let tipoDelArchivo = ''
 let indice = -1

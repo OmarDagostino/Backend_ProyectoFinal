@@ -348,7 +348,7 @@ router.get('/borrarProductos',auth,async (req,res)=> {
 // en Login view
 router.get('/login', auth2, (req,res)=>{
  
-  menuManagement (req,res,[1,1,0,1,0,0,0,0,0,0,0,0])
+  menuManagement (req,res,[0,1,0,1,0,0,0,0,0,0,0,0])
   let typeofuser='' ;
   let error= false
   let errorDetail = ''
@@ -364,7 +364,7 @@ router.get('/login', auth2, (req,res)=>{
 // en re-start password requirement
 router.get('/forgot', auth2, (req,res,mostrarMensaje,mensaje)=>{
  
-  menuManagement (req,res,[1,1,0,1,0,0,0,0,0,0,0,0])
+  menuManagement (req,res,[0,1,0,1,0,0,0,0,0,0,0,0])
   let typeofuser='' ;
   let error= false
   let errorDetail = ''
@@ -390,7 +390,7 @@ res.status(200).render('recupera',{usuario})
 // en Git Hub Login view
 router.get('/loginGitHub', auth2, (req,res)=>{
   
-  menuManagement (req,res,[1,1,1,0,0,0,0,0,0,0,0,0])
+  menuManagement (req,res,[0,1,1,0,0,0,0,0,0,0,0,0])
   let typeofuser='' ;
   let error= false
   let errorDetail = ''
@@ -407,7 +407,7 @@ router.get('/loginGitHub', auth2, (req,res)=>{
 // en User registration view
 router.get('/registro',auth2,  (req,res)=>{
   
-  menuManagement (req,res,[1,0,1,1,0,0,0,0,0,0,1,1])
+  menuManagement (req,res,[0,0,1,1,0,0,0,0,0,0,1,0])
   let typeofuser='';
   let error= false
   let errorDetail = ''

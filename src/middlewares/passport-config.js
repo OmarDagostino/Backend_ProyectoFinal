@@ -21,19 +21,16 @@ const inicializaPassport = () => {
           }
         
           if (!validarCorreoElectronico(username)) {
-        
             return done (null, false)
           }
         
           const existeUsuario = await usersServices.obtenerUsuarioPorEmail(username)
           if (existeUsuario) {
-        
             return done (null, false)
           }
           password=crypto.createHmac('sha256','palabraSecreta').update(password).digest('base64')
           let typeofuser='user'
           const usuario = usersServices.crearUsuario(name,email,password,typeofuser,last_name,age)
-            
           return done (null,usuario)
         
         } catch (error) {

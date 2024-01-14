@@ -21,7 +21,7 @@ const transport = nodemailer.createTransport({
 })
 
 // sp GET para retornar un carrito por su ID
-// en GET to return a cart by ID
+// en GET to return cart by ID
 async function getCarrito (req, res) {
   let customStatusCode =500 ;   
   try {
@@ -51,7 +51,7 @@ async function getCarrito (req, res) {
 };
 
 // sp POST para agregar un producto a un carrito existente
-// en POST in order to add a product to an existing cart
+// en POST to add a product to an existing cart
 async function agregarProducto(req, res) {
   let customStatusCode =500 ;   
   let validObjectId 
@@ -120,19 +120,20 @@ async function agregarProducto(req, res) {
       let error = CustomError.createCustomError(7);
           customStatusCode=error.codigo;
     }
-    res.status(customStatusCode).send(`${error.descripcion} `);
+    res.set('Content-Type', 'application/json');
+    res.status(customStatusCode).json({error : `${error.descripcion} `});
   } 
 }
 
 // sp POST para crear un nuevo carrito
-// en POST to create a new cart
+// en POST to create new cart
 async function crearCarrito(req, res) {
   let customStatusCode =500 ;   
   try {
     const productId = req.params.pid;
     const quantity = 1;
     // sp Verificar si el producto existe en la base de datos de productos
-    // en Product check register in product data base
+    // en Check for product in data base
     const validObjectId = ObjectId.isValid(productId) ? new ObjectId(productId) : null;
     if (!validObjectId) { 
       let error = CustomError.createCustomError(4);
@@ -166,7 +167,7 @@ async function crearCarrito(req, res) {
 };
 
 // sp POST para hacer el proceso de compra
-// en POST for buying process
+// en POST to process purchase
 
 async function procesoDeCompra (req,res) {
   let customStatusCode =500 ;   
@@ -209,7 +210,7 @@ async function procesoDeCompra (req,res) {
       await productServices.actualizarProducto(producto, ProductId)
     }
     // sp calculo del total del ticket 
-    // en compute total ticket
+    // en compute ticket total
 
     const totalTicket = productsToTicket.reduce((total, item) => {
       const subtotal = item.price * item.quantity;
@@ -218,14 +219,14 @@ async function procesoDeCompra (req,res) {
 
 
     // sp calculo de descuentos e impuestos (posible agregado a futuro)
-    // en discount and taxes calculations (additional code to be incorporarted)
+    // en discount and tax calculations (additional code to be incorporarted)
 
     const discounts = 0;
     const taxes = 0;
     const amount = totalTicket - discounts + taxes;
 
     // sp generacion del ticket de compra
-    // en making ticket
+    // en generate purchase ticket
     let emailContent = ''
     let sendermail=''
     const user= await usersServices.obtenerUsuarioPorCartid (cartId)
@@ -249,7 +250,7 @@ async function procesoDeCompra (req,res) {
       ticketsServices.crearTicket(newtickect)
       
       // sp envio de correo al usuario con el ticket de compra
-      // en ticket email sending to user 
+      // en ticket email to user 
     
       const useremail = user.email
       const sendermail = config.GMAIL_USER    
@@ -274,7 +275,7 @@ async function procesoDeCompra (req,res) {
     }
       
     // sp actualizar carrito con los productos pendientes sin stock 
-    // en cart update with the pending products (with insuficient stock)
+    // en cart update with out of stock products
     updatedCart.products = []; 
     if (productsToWait.length > 0) {
       for (let n = 0; n < productsToWait.length; n++) {  
@@ -288,9 +289,9 @@ async function procesoDeCompra (req,res) {
     cartsServices.actualizarCarrito (updatedCart,cartId)
 
     // sp enviar mail del carrito pendiente de stock 
-    // en remaining products cart email 
+    // en out of stock products cart email 
     
-    if (productsToTicket.length !== 0 )  {
+    if (productsToWait.length !== 0 )  {
       let subject = `Carrito de compra ${cartId}`
       emailContent = '<table border="1"><tr><th>Identificador del Producto</th><th>Cantidad</th></tr>';
       productsToWait.forEach(item => {
@@ -324,7 +325,7 @@ async function procesoDeCompra (req,res) {
 }
 
 // sp DELETE para eliminar un producto de un carrito 
-// en product erase from a cart
+// en erase product from cart
 async function eliminarProductoDelCarrito (req, res) {
   let customStatusCode =500 ;   
   try {
@@ -372,7 +373,7 @@ async function eliminarProductoDelCarrito (req, res) {
 };
 
 // sp DELETE para eliminar todos los productos de un carrito 
-// en all product erase from a cart
+// en erase all products from cart
 async function eliminarTodosProductosDelCarrito (req, res) {
   let customStatusCode =500 ;   
   try {
@@ -407,7 +408,7 @@ async function eliminarTodosProductosDelCarrito (req, res) {
 };
 
 // sp PUT para actualizar la cantidad de un producto de un carrito existente
-// en PUT to update product quatity in a specific  cart
+// en PUT to update product quantity in existing cart
 async function actualizarCantidadDeUnProducto(req, res) {
   let customStatusCode =500 ;   
   try {
@@ -456,7 +457,7 @@ async function actualizarCantidadDeUnProducto(req, res) {
 
 
 // sp PUT para actualizar todos los elementos de un carrito
-// en PUT to update the whole cart
+// en PUT to update whole cart
 async function actualizarTodoElCarrito(req, res) {
   let customStatusCode =500 ;   
   try {

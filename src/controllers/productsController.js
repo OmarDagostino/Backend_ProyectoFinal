@@ -25,7 +25,7 @@ const transport = nodemailer.createTransport({
 })
 
 // sp: GET para retornar varios productos o todos
-// en: GET return several products or all
+// en: GET return several or all products 
 async function getProducts (req, res) {
   let customStatusCode =500 ;   
   try {
@@ -77,7 +77,7 @@ async function getProducts (req, res) {
 };
 
 // sp: GET para retornar un producto por su ID
-// en: GET to return one specific product by ID
+// en: GET to return specific product by ID
 async function getProductById (req, res) {
  let customStatusCode = 500;
   try {
@@ -107,7 +107,7 @@ async function getProductById (req, res) {
 };
 
 // sp GET para retornar 100 productos imaginarios creados con faker-js
-// en GET to return 100 facking products created by faker-js
+// en GET to return 100 fake products created by faker-js
 async function getMockingProducts (req,res) {
   let products = [];
   for (let i=0;i<100;i++) {
@@ -117,7 +117,7 @@ async function getMockingProducts (req,res) {
 }
 
 // sp POST para crear un nuevo producto
-// en post for creating a new product
+// en post to create new product
 async function crearProducto(req, res) {
   let customStatusCode =500;   
   try {   
@@ -147,14 +147,14 @@ async function crearProducto(req, res) {
 }
 
 // sp PUT para actualizar un producto por su ID
-// en PUT for updating a new product by ID
+// en PUT to update new product by ID
 async function actualizarProducto (req, res) {
   let customStatusCode =500            ;   
   try {
     const productId = req.params.pid;
     const updatedProduct = req.body;
     // sp validar formato de las propiedades
-    // en properties'check
+    // en properties'format check
     const validateUpdateProduct = [
       body('title').optional().isString(),
       body('description').optional().isString(),
@@ -215,7 +215,7 @@ async function actualizarProducto (req, res) {
 };
 
 // sp DELETE para eliminar un producto por su ID
-// en Product delete by Id
+// en delete Product by Id
 async function borrarProducto(req, res) {
   let customStatusCode =500 ;
   let updatedProducts=[]   ;   

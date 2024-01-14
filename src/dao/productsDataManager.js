@@ -16,7 +16,7 @@ mongoose.connect(config.MONGO_URL);
 export class productsDataManager { 
 
   // sp obtener una lista de productos con filtros y paginaciones
-  // en get all products or several considering filters and pagination
+  // en get all or several products considering filters and pagination
 
   async obtenerProductos (combinedFilter, options)
   {
@@ -29,7 +29,7 @@ export class productsDataManager {
   };
 
   // sp obtener un producto por su ID
-  // en get a product by ID
+  // en get product by ID
   async obtenerProducto (pid) 
   {
     try {
@@ -51,7 +51,7 @@ export class productsDataManager {
   };
 
   // sp obtener un producto por su codigo
-  // en get a product by code
+  // en get product by code
 
   async obtenerProductoPorCodigo (codigo) 
   {
@@ -64,7 +64,7 @@ export class productsDataManager {
   };
 
   // sp Crear un nuevo producto
-  // en New product creation
+  // en New product 
   async crearProducto (newProduct) 
   {
     try {  
@@ -104,7 +104,7 @@ export class productsDataManager {
   };
 
   // sp Eliminar un producto por su ID
-  // en Product delete by ID
+  // en Delete product  by ID
   async eliminarProducto (pid) 
   {
     try {

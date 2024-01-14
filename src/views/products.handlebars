@@ -15,7 +15,7 @@
                 <th>Categoría</th>
                 <th>Precio</th>
                 <th>Existencias</th>
-                <th>Propietario</th>
+                <th>Distribuidor</th>
                 <th>Agregar al carrito</th>
             </tr>
         </thead>
@@ -45,16 +45,25 @@
             addToCartButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
                     const productId = button.getAttribute("data-productid");
+                    let errortag = false
                     fetch(`/api/carts/${cartId}/product/${productId}`, {
                         method: "POST",
                     })
                     .then(function (response) {
                         if (!response.ok)  {
+                            errortag = true
                             console.error ('no se ha agregado al carrito')
-                        } 
+                        }
+                        return response.json();
+                    })
+                    .then(function (data) {
+                      
+                       if (errortag) {alert (`no se ha agregado el producto al carrito, ${data.error}`)};
                     })
                     .catch(function (error) {
                         console.error("Error al realizar la solicitud POST:", error);
+                        console.error("Detalles del error:", error.message, error.response);
+                        
                     });
                 });
             });

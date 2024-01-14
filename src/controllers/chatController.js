@@ -4,7 +4,7 @@ import { chatModel } from '../../src/models/chat.model.js';
 import express from 'express';
 
 // sp dinámica del CHAT
-// en CHAT interaction 
+// en CHAT dynamic 
 
 export function chatController(server) {
   const app = express();
@@ -56,7 +56,7 @@ export function chatController(server) {
     });
   });
 // sp carga los mensajes guardados hasta el momento
-// en messages load at the last chat
+// en load saved messages
   async function leerMensajes() {
     try {
       const mensajesDB = await chatModel.find({}, 'user message').maxTimeMS(20000).exec();

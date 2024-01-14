@@ -9,7 +9,7 @@ export function  dtousuario (req, res, next) {
       age: usuario.age,
       last_name: usuario.last_name,
     };
-    req.dto = { usuario: usuarioDTO }; // Almacenar el DTO en el objeto de solicitud
+    req.dto = { usuario: usuarioDTO }; 
     next();
   } catch (error) {
     console.error('Error en el middleware DTO', error);

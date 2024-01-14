@@ -40,7 +40,7 @@ export class usersDataManager
     }
   };
   // sp Obtener un usuario con el ID del carrito
-  // en Get user by ID Cart
+  // en Get user by Cart ID
   async obtenerUsuarioPorCartid   (CartId)
   {
     try { 
@@ -64,7 +64,7 @@ export class usersDataManager
       }
   }
   // sp Crear un usuario
-  // en User creation
+  // en New user
   async crearUsuario  (name,email,password,typeofuser,last_name,age)
   {
     let cartId
@@ -93,7 +93,7 @@ export class usersDataManager
     }
   }
   // sp Actualizar un usuario
-  // en User update
+  // en Update user 
   async actualizarUsuario  (email,usuario)
   {  
     try {
@@ -139,7 +139,7 @@ export class usersDataManager
       }
   }
   // sp Eliminar un usuario
-  // en User delete
+  // en Delete user 
   async eliminarUsuario (id)
   {  
     try {
@@ -166,7 +166,7 @@ export class usersDataManager
     }
   }
   // sp actualizar la fecha y hora de la última conección
-  // en date stamp unpdate with the last connection
+  // en Date stamp last connection update 
   async actualizarUsuarioUltimoLog  (email)
   {  
     try {
@@ -185,7 +185,7 @@ export class usersDataManager
     }
   }
   // sp Actualizar el array de documentos subidos por un usuario
-  // en Array documents uploaded update in the users file
+  // en Array documents uploaded update (in users file)
   async actualizarDocumentosSubidos  (id,nombre,linkDelArchivo)
   { 
     try {

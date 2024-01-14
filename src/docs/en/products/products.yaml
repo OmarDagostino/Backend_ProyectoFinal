@@ -283,30 +283,30 @@ components:
               status:
                 type: boolean
                 description : product status
-              totalPages: 
-                type: integer
-                description: Page quantities of the whole requirement
-              prevPage:
-                type: integer
-                description: Previous page number (or null if it does not exits)
-              nextPage:
-                type: integer
-                description: Next page numbre (or null if it does not exits)
-              page:
-                type: integer
-                description: current page number
-              hasPrevPage: 
-                type: boolean
-                description: previous page existance
-              hasNextPage: 
-                type: boolean
-                description: next page existance
-              prevLink: 
-                type: string
-                description: previous page URl
-              nextLink: 
-                type: string
-                description: next page URL
+        totalPages: 
+          type: integer
+          description: Page quantities of the whole requirement
+        prevPage:
+          type: integer
+          description: Previous page number (or null if it does not exits)
+        nextPage:
+          type: integer
+          description: Next page numbre (or null if it does not exits)
+        page:
+          type: integer
+          description: current page number
+        hasPrevPage: 
+          type: boolean
+          description: previous page existance
+        hasNextPage: 
+          type: boolean
+          description: next page existance
+        prevLink: 
+          type: string
+          description: previous page URl
+        nextLink: 
+          type: string
+          description: next page URL
       example:
         status1: success
         payload: 

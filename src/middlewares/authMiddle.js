@@ -21,7 +21,7 @@ export function authAdmin (req, res, next) {
 }
   
 // sp middleware para redireccionar al login si no tiene una sesion activa 
-// en login redirect if there is not an active session
+// en login redirect (if there is no active session)
 export const auth=(req,res,next)=>{
   if (req.session.usuario) {
     next ()
@@ -31,7 +31,7 @@ export const auth=(req,res,next)=>{
 }
 
 // sp middleware para redireccionar a la vista principal si tiene una sesion activa 
-// en products selection page redirection if there is an active session
+// en products selection redirect (if there is active session)
 export const auth2=(req,res,next)=>{
   if (req.session.usuario) {
     return res.redirect('/products')  

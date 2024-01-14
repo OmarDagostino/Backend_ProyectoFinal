@@ -61,11 +61,11 @@ async function Login (req, res, next) {
   }
   if (req.session.admin) {
     // sp Redirige al menu del administrador 
-    // en Administrator menu redirects
+    // en Redirects to Administrator menu 
     return res.redirect('/admin'); 
   } else {
     // sp Redirige al usuario
-    // en User redirects
+    // en Redirects to User 
     return res.redirect('/products'); 
   }
 };
@@ -79,7 +79,7 @@ async function logout(req,res) {
   } catch (error) {
     return res.status(500).send(`error inesperado al actualizar el ultimo logout del usuario`)
   }
-  await req.session.destroy(e=> console.error(e)),
+  await req.session.destroy(),
   res.redirect('/login?mensaje=logout correcto... !')
 }
 
@@ -92,7 +92,7 @@ async function current (req,res) {
 }
 
 // sp mostrar los datos del usuario que esta registrado con handlebars
-// en return users'data in order to show it through hadlebars
+// en return users'data with handlebars
 
 async function current1 (req,res) {
   return res.redirect('./current')
@@ -107,13 +107,13 @@ async function premium (req,res) {
     const usuario = await usersServices.obtenerUsuarioPorEmail(direccionDeCorreo)
     if (usuario) { 
       // sp Verificar si al menos hay un elemento con name: 'identificacion'
-      // en at least one element with the name "identificacion" has to be present
+      // en Verify at least one element with the name "identificacion" is present
       let existeIdentificacion = usuario.documents.some(elemento => elemento.name === 'identificacion');
       // sp Verificar si al menos hay un elemento con name: 'estado de cuenta'
-      // en at least one element with the name "estado de cuenta" has to be present
+      // en Verify at least one element with the name "estado de cuenta" is present
       let existeEstadoCuenta = usuario.documents.some(elemento => elemento.name === 'estadoCuenta');
       // sp Verificar si al menos hay un elemento con name: 'domicilio'
-      // en at least one element with the name "domicilio" has to be present
+      // en Verify at least one element with the name "domicilio" is present
       let existeDomicilio = usuario.documents.some(elemento => elemento.name === 'domicilio');
       if (usuario.typeofuser==='user') {
         if (!existeIdentificacion || !existeEstadoCuenta || !existeDomicilio) {
@@ -137,7 +137,7 @@ async function premium (req,res) {
 }
 
 // sp solicitar recuperar la contraseña 
-// en require a new password
+// en request new password
 
 async function forgot(req, res, next) {
   try {
@@ -168,8 +168,8 @@ async function forgot(req, res, next) {
   }
 }
 
-// sp efectuar la recuperación de la contraseña
-// en password re-start process
+// sp restablecer la contraseña
+// en restore password 
 
 async function recuperacion (req,res,next) {
   let { email, newPassword } = req.body;
@@ -202,7 +202,7 @@ async function recuperacion (req,res,next) {
 }
 
 // sp subir archivo con documentación e imagenes de los usuarios
-// en upload users douidcumentation and images
+// en upload users documentation and images
 
 async function documents (req,res) {  
   return res.status(200).send('archivos subidos'); 
@@ -238,7 +238,7 @@ async function usersDelete(req,res) {
 }
 
 // sp Depurar el archivo de usuarios eliminando aquellos que no se conectaron en los ultimos 2 días
-// en Users' file debugging erasing those with inactivity in the last two days
+// en Users' file debugging erasing those inactive in the last two days
 
 async function usersDebugging (req,res) {
   try {
