@@ -24,23 +24,20 @@ router.use(express.urlencoded({ extended: true }));
 
 // sp Login con email con error
 // en Email login with error
-
 async function errorLogin (req,res)  {
-  res.redirect('/login?error=Login con error')    
+  res.status(400).render('login',{errorDetail : 'login con error', error: true, mostrarMenu1:true, mostrarMenu3:true})
 };
 
 // sp Login de Git Hub con error
 // en GitHub login with error
 
 async function errorLoginGitHub (req,res) {
-  res.redirect('/loginGitHub?error=**Login con error**')    
+  res.status(400).render('loginGitHub',{errorDetail : 'login con error', error: true,mostrarMenu2:true,mostrarMenu3:true})    
 };
 
 // sp registro con error
-// en registration with error
-
 async function errorRegistro (req,res) {
-  res.redirect('/registro?error=Error de registro')    
+  res.status(400).render('registro',{errorDetail : 'Registro con error', error: true,mostrarMenu2:true,mostrarMenu3:true})    
 };
 
 // sp Login de un usuario o del administrador con email y password
@@ -73,13 +70,15 @@ async function Login (req, res, next) {
 // sp hacer el logOut
 // en Logout process
 async function logout(req,res) {
-  try {
-    let email = req.session.usuario.email
-    await usersServices.actualizarUsuarioUltimoLog(email)
-  } catch (error) {
-    return res.status(500).send(`error inesperado al actualizar el ultimo logout del usuario`)
+  if (req.session.usuario) {
+    try {
+      let email = req.session.usuario.email
+      await usersServices.actualizarUsuarioUltimoLog(email)
+    } catch (error) {
+      return res.status(500).send(` error inesperado al actualizar el ultimo logout del usuario ${error}`)
+    }
+    await req.session.destroy()
   }
-  await req.session.destroy(),
   res.redirect('/login?mensaje=logout correcto... !')
 }
 

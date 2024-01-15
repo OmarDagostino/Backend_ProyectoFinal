@@ -49,9 +49,18 @@ Nota : en la carpeta de test existen 3 archivos de prueba : Domicilio.txt, Estad
 - Prueba : existe una ruta especifica api/loggerTest que imprime mensajes de error de prueba consigurados a tal efecto.
 
 ## Base de datos 
+- Colecciones : 
+    - users1 => Usuarios
+    - products1 => Products
+    - carts1 => Carritos de compra
+    - sessions => Sesiones 
+    - tickets1 => Tickets
+    - lasttickets1 => Ultimo numero de ticket
+    - messages1 => Mensajes del chat
+
 - Las bases de datos estan cargadas con los datos necesarios para hacer todos los procesos implementados, pero si se quiere probar con bases de datos vacias, se debe registrar un usuario con el mail adminCoder@coder.com, y luego entrar por el servicio de MongoDB Atlas y modificar manualmente el tipo de usuario a 'admin'. De esta forma se podrá acceder como administrador del sitio. 
 
-- Datos de prueba : 
+## Datos de prueba : 
 
 - Usuarios : además del administrador (con la contraseña requerida en la consigna), se han registrado 4 usuarios adicionales cuyos emails y contraseñas son los siguientes : 
     1) lauzambo@gmail.com => "Laura" (es un usuario Premium)
@@ -68,7 +77,7 @@ Nota : en la carpeta de test existen 3 archivos de prueba : Domicilio.txt, Estad
 - Hasheo de password : Bcrypt
 - Logger : Winston
 - Websocket : socket.io
-- Test : Mocha / chai / supertest (solo en modalidad de desarrollo)
+- Test : Mocha / chai / supertest 
 - Documentación : Swagger (Idioma Ingles en modalidad -l en / Idioma Español en modalidad -l sp)
 - Servicio de mail : nodemailer con gmail
 - Subida de archivos : Multer
