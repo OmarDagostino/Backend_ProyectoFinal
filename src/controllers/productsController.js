@@ -76,6 +76,7 @@ async function getProducts (req, res) {
   }
 };
 
+
 // sp: GET para retornar un producto por su ID
 // en: GET to return specific product by ID
 async function getProductById (req, res) {

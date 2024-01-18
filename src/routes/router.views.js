@@ -6,6 +6,7 @@ import { validaJWT } from '../middlewares/validaJWT.js';
 import __dirname from '../util.js';
 import {cartModel} from '../models/cart.model.js';
 import {productModel} from '../models/product.model.js';
+import { productServices } from '../services/productsServices.js';
 import { userModel } from '../models/user.model.js';
 import { ObjectId } from 'mongodb';
 
@@ -450,14 +451,47 @@ router.get('/chat',authUser, (req,res)=> {
   res.status(200).render('chat',{email,mostrarMenu0,mostrarMenu1,mostrarMenu2,mostrarMenu3,mostrarMenu4,mostrarMenu5,mostrarMenu6,mostrarMenu7,mostrarMenu8,mostrarMenu9,mostrarMenu10,mostrarMenu11});
 })
 
+
 // sp ruta para mostrar los productos a un usuario
-// en product prompt for users (main view)
-router.get('/products', auth,  async (req,res) => {
+// en first page products prompt for users (main view)
+
+router.get('/products', auth, async (req, res) => {
   try {
-    const name = req.session.usuario.name
-    const cartId = req.session.usuario.cartId
-    const product = await productModel.find({}).exec();
-    const renderedProducts = product.map(product => {
+    const name = req.session.usuario.name;
+    const cartId = req.session.usuario.cartId;
+
+    const limit = 20;
+    const page = req.query.page || 1; // Usar la página proporcionada por el usuario o la primera página por defecto
+    const filter = {};
+    const options = {
+      page,
+      limit,
+    };
+    const combinedFilter = {
+      ...filter,
+    };
+
+    const products = await productServices.obtenerProductos(combinedFilter, options);
+    const pageNumber = parseInt(page);
+    const prevPage = pageNumber > 1 ? pageNumber - 1 : null;
+    const nextPage = pageNumber < products.totalPages ? pageNumber + 1 : null;
+    const totalPages = products.totalPages;
+    const hasPrevPage = products.hasPrevPage;
+    const hasNextPage = products.hasNextPage;
+    const prevPageUrl = prevPage ? `/products?page=${prevPage}&limit=${limit}` : null;
+    const nextPageUrl = nextPage ? `/products?page=${nextPage}&limit=${limit}` : null;
+    const pages = [];
+
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push({
+        isCurrent: i == page,
+        page: i,
+        url: `/products?page=${i}&limit=${limit}`,
+      });
+    }
+
+    const product = await productModel.paginate(combinedFilter, options);
+    const currentPageProducts = product.docs.map((product) => {
       return {
         _id: product._id,
         title: product.title,
@@ -466,19 +500,83 @@ router.get('/products', auth,  async (req,res) => {
         code: product.code,
         category: product.category,
         stock: product.stock,
-        owner: product.owner
+        owner: product.owner,
       };
-      
     });
+
     res.setHeader('Content-Type', 'text/html');
-    menuManagement (req,res,[1,0,0,0,1,0,1,1,0,1,1,1])
-    let typeofuser=req.session.usuario.typeofuser;
-    res.status(200).render('products', { renderedProducts,name, cartId, typeofuser, mostrarMenu0,mostrarMenu1,mostrarMenu2,mostrarMenu3,mostrarMenu4,mostrarMenu5,mostrarMenu6,mostrarMenu7,mostrarMenu8,mostrarMenu9,mostrarMenu10,mostrarMenu11}); 
+    menuManagement(req, res, [1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1]);
+    let typeofuser = req.session.usuario.typeofuser;
+    res.status(200).render('products', {
+      currentPageProducts, name, page, pages, hasPrevPage, hasNextPage, prevPageUrl, nextPageUrl, nextPage, prevPage, cartId, typeofuser, mostrarMenu0, mostrarMenu1, mostrarMenu2, mostrarMenu3, mostrarMenu4, mostrarMenu5, mostrarMenu6, mostrarMenu7, mostrarMenu8, mostrarMenu9, mostrarMenu10, mostrarMenu11 });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error en el servidor');
   }
-})
+});
+
+// sp Ruta para mostrar las paginas de productos siguientes al usuario
+// en Show required products page to users
+router.get('/products/pages', auth, async (req, res) => {
+  try {
+    const name = req.session.usuario.name;
+    const cartId = req.session.usuario.cartId;
+    const targetPage = req.query.page || 1;
+
+    const limit = 20;
+    const page = targetPage;
+    const filter = {};
+    const options = {
+      page,
+      limit,
+    };
+    const combinedFilter = {
+      ...filter,
+    };
+
+    const products = await productServices.obtenerProductos(combinedFilter, options);
+    const pageNumber = parseInt(page);
+    const prevPage = pageNumber > 1 ? pageNumber - 1 : null;
+    const nextPage = pageNumber < products.totalPages ? pageNumber + 1 : null;
+    const totalPages = products.totalPages;
+    const hasPrevPage = products.hasPrevPage;
+    const hasNextPage = products.hasNextPage;
+    const prevPageUrl = prevPage ? `/products?page=${prevPage}&limit=${limit}` : null;
+    const nextPageUrl = nextPage ? `/products?page=${nextPage}&limit=${limit}` : null;
+    const pages = [];
+
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push({
+        isCurrent: i == page,
+        page: i,
+        url: `/products?page=${i}&limit=${limit}`,
+      });
+    }
+
+    const product = await productModel.paginate(combinedFilter, options);
+    const currentPageProducts = product.docs.map((product) => {
+      return {
+        _id: product._id,
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        code: product.code,
+        category: product.category,
+        stock: product.stock,
+        owner: product.owner,
+      };
+    });
+
+    res.setHeader('Content-Type', 'text/html');
+    menuManagement(req, res, [1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1]);
+    let typeofuser = req.session.usuario.typeofuser;
+    res.status(200).render('products', {
+      currentPageProducts, name, page, pages, hasPrevPage, hasNextPage, prevPageUrl, nextPageUrl, nextPage, prevPage, cartId, typeofuser, mostrarMenu0, mostrarMenu1, mostrarMenu2, mostrarMenu3, mostrarMenu4, mostrarMenu5, mostrarMenu6, mostrarMenu7, mostrarMenu8, mostrarMenu9, mostrarMenu10, mostrarMenu11 });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error en el servidor');
+  }
+});
  
 // sp Ruta para mostrar el contenido de un carrito por su _id
 // en shows cart content by cart Id

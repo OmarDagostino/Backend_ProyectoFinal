@@ -1,72 +1,148 @@
-{{>menu}}
-<h3> Bienvenido 
-<strong> {{name}} </strong>
-<strong> Tu identificador del carrito es : </strong>
-<strong> {{cartId}} </strong>
-</h3>
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>Identificador</th> 
-                <th>Código</th>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-                <th>Existencias</th>
-                <th>Distribuidor</th>
-                <th>Agregar al carrito</th>
-            </tr>
-        </thead>
-        <tbody id="productTableBody">
-            {{#each renderedProducts}}
-                <tr>
-                    <td>{{_id}}</td>
-                    <td>{{code}}</td>
-                    <td>{{title}}</td>
-                    <td>{{description}}</td>
-                    <td>{{category}}</td>
-                    <td>{{price}}</td>                    
-                    <td>{{stock}}</td>
-                    <td>{{owner}}</td>
-                    <td>
-                        <button class="addToCartButton" data-productid="{{_id}}">Agregar al carrito</button>
-                    </td>
-                </tr>
-            {{/each}}
-        </tbody>
-    </table>
+<body id="body">
+  {{>menu}}
+  <h3> Bienvenido 
+    <strong> {{name}} </strong>
+    <strong> Tu identificador del carrito es : </strong>
+    <strong> {{cartId}} </strong>
+  </h3>
+  <!-- Controles de Paginación -->
+  <div class="pagination">
+    {{#if hasPrevPage}}
+      <a href="/products?page={{prevPage}}" class="pagination-link">Página Anterior &#9658 {{prevPage}} </a>
+    {{/if}}
+    <strong> Paginas disponibles &#9658 </strong>
+    {{#each pages}}
+      {{#if isCurrent}}
+        <p id="current-page">{{page}}</p>
+      {{else}}
+        <a href="/products?page={{page}}" class="pagination-link">{{page}}</a>
+      {{/if}}
+    {{/each}}
+    {{#if hasNextPage}}
+      <a href="/products?page={{nextPage}}" class="pagination-link">Página Siguiente &#9658 {{nextPage}}</a>
+    {{/if}}
+  </div>
+    <div id="contentContainer">
+  <table>
+    <thead>
+      <tr>
+        <th>Identificador</th> 
+        <th>Código</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Existencias</th>
+        <th>Distribuidor</th>
+        <th>Agregar al carrito</th>
+      </tr>
+    </thead>
+    <tbody id="productTableBody">
+      {{#each currentPageProducts}}
+        <tr>
+          <td>{{_id}}</td>
+          <td>{{code}}</td>
+          <td>{{title}}</td>
+          <td>{{description}}</td>
+          <td>{{category}}</td>
+          <td>{{price}}</td>                    
+          <td>{{stock}}</td>
+          <td>{{owner}}</td>
+          <td>
+            <button class="addToCartButton" data-productid="{{_id}}">Agregar al carrito</button>
+          </td>
+        </tr>
+      {{/each}}        
+    </tbody>
+  </table>
+    </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Función para manejar la paginación
+        function handlePagination(targetPage) {
+            fetch(`/products/pages?page=${targetPage}`, {
+                method: "GET",
+            })
+            .then(function (response) {
+                if (!response.ok) {
+                console.error('Error al cargar la página');
+                return;
+                }
+                return response.text();
+            })
+            .then(function (data) {
+                const productTableBody = document.getElementById("productTableBody");
+                const paginationContainer = document.querySelector(".pagination");
+                body.innerHTML = data;
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const cartId = "{{cartId}}"
+                // Actualizar los enlaces de paginación
+                paginationContainer.innerHTML = "";
+                if (data.hasPrevPage) {
+                    paginationContainer.innerHTML += `<a href="/products?page=${data.prevPage}" class="pagination-link">Página Anterior &#9658 ${data.prevPage}</a>`;
+                }
+                if (data.pages && Array.isArray(data.pages)) {
+                    data.pages.forEach(pageInfo => {
+                        if (pageInfo.isCurrent) {
+                        paginationContainer.innerHTML += `<p id="current-page">${pageInfo.page}</p>`;
+                        } else {
+                        paginationContainer.innerHTML += `<a href="/products?page=${pageInfo.page}" class="pagination-link">${pageInfo.page}</a>`;
+                        }
+                });
+                }
+                if (data.hasNextPage) {
+                paginationContainer.innerHTML += `<a href="/products?page=${data.nextPage}" class="pagination-link">Página Siguiente &#9658 ${data.nextPage}</a>`;
+                }
+
+                // Volver a vincular eventos en los nuevos botones "Agregar al carrito"
+                bindAddToCartButtons();
+            })
+            .catch(function (error) {
+                console.error("Error al realizar la solicitud GET:", error);
+            });
+        }
+
+        // Función para vincular eventos en los botones "Agregar al carrito"
+        function bindAddToCartButtons() {
+            const cartId = "{{cartId}}";
             const addToCartButtons = document.querySelectorAll(".addToCartButton");
             addToCartButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
                     const productId = button.getAttribute("data-productid");
-                    let errortag = false
+                    let errortag = false;
                     fetch(`/api/carts/${cartId}/product/${productId}`, {
                         method: "POST",
                     })
                     .then(function (response) {
                         if (!response.ok)  {
-                            errortag = true
-                            console.error ('no se ha agregado al carrito')
+                        errortag = true;
+                        console.error('No se ha agregado al carrito');
                         }
                         return response.json();
                     })
                     .then(function (data) {
-                      
-                       if (errortag) {alert (`no se ha agregado el producto al carrito, ${data.error}`)};
+                        if (errortag) {
+                        alert(`No se ha agregado el producto al carrito, ${data.error}`);
+                        }
                     })
                     .catch(function (error) {
                         console.error("Error al realizar la solicitud POST:", error);
-                        console.error("Detalles del error:", error.message, error.response);
-                        
                     });
                 });
             });
+        }
+
+        // Vincular evento de click en enlaces de paginación
+        document.querySelectorAll(".pagination-link").forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                const targetPage = link.getAttribute("href").split('=')[1];
+                handlePagination(targetPage);
+            });
         });
-    </script>
+
+        // Vincular eventos en los botones "Agregar al carrito" iniciales
+        bindAddToCartButtons();
+    });
+</script>
+
 </body>

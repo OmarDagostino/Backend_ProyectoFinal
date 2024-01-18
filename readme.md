@@ -39,7 +39,7 @@ Nota : en la carpeta de test existen 3 archivos de prueba : Domicilio.txt, Estad
 
 - Si el login lo hizo el administrador se le mostrara el menu con las tareas que el administrador puede hacer. 
 
--El menu de usuario permite agregar productos al carrito, ver los datos del usuario, hacer logout, subir documentos y ver el contenido del carrito, en donde podrá hacer el proceso de compra. 
+-El menu de usuario permite agregar productos al carrito (incluyendo una vista con paginación funcional), ver los datos del usuario, hacer logout, subir documentos y ver el contenido del carrito, en donde podrá hacer el proceso de compra. 
 
 -Todas las vistas de handlebars se manejan con el ruteador de vistas router.views.js
 
