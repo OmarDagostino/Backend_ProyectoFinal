@@ -1,14 +1,16 @@
-{{> menu}}
+{{>menu}}
 <body>
     <h4 id="cartId">{{cart.cartId}}</h4>
-    <h4 id="identificador-del-carrito">
-        Identificador del carrito
-        <strong>
+    <h4 id="identificador del carrito ">
+        Identificador del carrito 
+    
+        <strong> 
             {{cart.cartId}}
-            <form id="submitcomprar" action="api/carts/{{cart.cartId}}/purchase" method="POST">
-                <button id="boton-de-compra" type="submit" onclick="showLoader()">Comprar</button>
-                <div id="loader" style="display: none;"></div>
+    
+            <form id=submitcomprar action="api/carts/{{cart.cartId}}/purchase" method="POST">
+                <button id=boton_de_compra type="submit">Comprar</button>
             </form>
+            
         </strong>
     </h4>
     <h4>
@@ -19,18 +21,20 @@
 
     <table>
         <thead>
-            <th>Identificador del producto</th>
+            <tr>
+                <th>Identificador del producto</th>
                 <th>Título</th>
                 <th>Descripción</th>
                 <th>Precio</th>
                 <th>Código</th>
                 <th>Cantidad comprada</th>
                 <th>Sacar del carrito</th>
+            </tr>
         </thead>
         <tbody id="productTableBody">
             {{#each cart.products}}
                 <tr>
-                <td>{{this.productId}}</td>
+                    <td>{{this.productId}}</td>
                     <td>{{this.title}}</td>
                     <td>{{this.description}}</td>
                     <td>{{this.price}}</td>
@@ -38,28 +42,19 @@
                     <td>{{this.cantidad}}</td>
                     <td>
                         <button class="eliminarProducto" data-productid="{{this.productId}}"> Sacar del carrito </button>
-                    </td>
+                   </td>
                 </tr>
             {{/each}}
         </tbody>
     </table>
-
     <script>
-        function showLoader() {
-            const loader = document.getElementById("loader");
-            const buyButton = document.getElementById("boton-de-compra");
-
-            loader.style.display = "inline-block";
-            setTimeout(function () {
-            buyButton.setAttribute("disabled", "true");
-        }, 1000);
-        }
-
+        const IDCart = document.getElementById('cartId');
+        const idCart = IDCart.innerHTML;
         document.addEventListener("DOMContentLoaded", function () {
             const deleteButtons = document.querySelectorAll(".eliminarProducto");
             deleteButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
-                  const productId = button.getAttribute("data-productid");
+                    const productId = button.getAttribute("data-productid");
                     const cartId = button.getAttribute("data-cartId");
                     fetch(`/api/carts/${idCart}/product/${productId}`, { 
                         method: "DELETE",
@@ -76,5 +71,8 @@
                 });
             });
         });
+
+        
+
     </script>
 </body>
